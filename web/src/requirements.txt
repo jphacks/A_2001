@@ -2,3 +2,5 @@ flask
 pymysql
 flask-sqlalchemy
 flask-migrate
+firebase-admin
+flask_jwt_extended
