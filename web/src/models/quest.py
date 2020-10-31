@@ -16,6 +16,7 @@ class Quest(db.Model):
     )
     content = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(5000))
     exp = db.Column(INTEGER(unsigned=True), default=0)
     done = db.Column(db.Boolean, default=False)
     created_at = db.Column(
