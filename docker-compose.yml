@@ -38,6 +38,7 @@ services:
     tty: true
     volumes:
       - ./frontend/app:/app
+      - /app/node_modules
     command: yarn dev
     environment:
       CHOKIDAR_USEPOLLING: "true"
