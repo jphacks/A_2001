@@ -16,15 +16,15 @@ export default {
     {
       name: 'Charts',
       url: '/charts',
-    },   
+    },
     {
       name: 'Charts',
       url: '/charts',
-    },   
+    },
     {
       name: 'Charts',
       url: '/charts',
-    },   
+    },
     {
       name: 'Charts',
       url: '/charts',
@@ -45,5 +45,5 @@ export default {
       name: 'ChartsChartsChartsChartsChartsChartsChartsChartsChartsCharts',
       url: '/charts',
     },
-  ] 
+  ],
 };

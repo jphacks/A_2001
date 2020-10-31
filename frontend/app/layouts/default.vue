@@ -15,11 +15,9 @@
 </template>
 
 <script>
-import nav from './menu';
 import {
   Header as AppHeader,
   Sidebar,
-  Aside as AppAside,
   Footer as AppFooter,
   Breadcrumb,
 } from '~/components/';
@@ -29,7 +27,6 @@ export default {
   components: {
     AppHeader,
     Sidebar,
-    AppAside,
     AppFooter,
     Breadcrumb,
   },

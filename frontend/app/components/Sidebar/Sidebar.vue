@@ -121,7 +121,7 @@ export default {
     SidebarNavItem,
     SidebarNavLabel,
   },
-  data: function () {
+  data() {
     return {
       navItems: [
         {
