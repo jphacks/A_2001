@@ -31,6 +31,7 @@ class Quest(db.Model):
         server_onupdate=db.func.current_timestamp(),
         nullable=False,
     )
+    quests_shared = db.relationship("QuestShared", backref="quest", cascade="all")
 
     def __init__(self, user_id, content, category):
         self.user_id = user_id
