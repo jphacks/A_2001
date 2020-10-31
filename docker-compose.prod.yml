@@ -23,6 +23,7 @@ services:
       APP_DATABASE_NAME: todo
       APP_DATABASE_USER: root
       APP_DATABASE_PASSWORD: root
+      SECRET_KEY: "./a-2001-firebase-adminsdk-ywn4n-f547fd749c.json"
     expose:
       - "8080"
     volumes:
