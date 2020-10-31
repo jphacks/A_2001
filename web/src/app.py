@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from .database import init_db
 from .blueprints import api, auth, quests
 from .models import User, Quest, QuestShared, Task, Subtask
+from .seeder import register_command
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -32,6 +33,7 @@ app.register_blueprint(quests, url_prefix="/")
 app.register_blueprint(auth, url_prefix="/")
 
 init_db(app)
+register_command(app)
 
 
 @app.route("/")
