@@ -24,6 +24,7 @@ def post_quest():
         payload = request.json
         content = payload.get("content")
         category = payload.get("category")
+        description = payload.get("description")
         if content is None or category is None:
             raise ValueError("content or category is None")
     except Exception as e:
@@ -31,7 +32,7 @@ def post_quest():
         return jsonify({"message": "Bad request error"}), 400
 
     try:
-        quest = Quest(user_id, content, category)
+        quest = Quest(user_id, content, category, description)
         db.session.add(quest)
         db.session.commit()
     except Exception as e:
