@@ -7,13 +7,13 @@ task = Blueprint('task', __name__)
 logger = logging.getLogger('app')
 
 
-@task.route("/task",method=["GET"])
+@task.route("/tasks",method=["GET"])
 def get_task():
     quest_id = 1
     tasks = Task.query.filter(Task.quest_id == quest_id).all()
     return jsonify({"tasks":[task.to_dict() for task in tasks]})
 
-@task.route("/task",method=["POST"])
+@task.route("/tasks",method=["POST"])
 def post_task():
     quest_id = 1
     try:
@@ -37,7 +37,7 @@ def post_task():
     response = jsonify(task.to_dict())
     return response, 201
 
-@task.route("/task",method=["DELETE"])
+@task.route("/tasks",method=["DELETE"])
 def delete_task(task_id):
     task = Task.query.filter_by(id = task_id).first()
     if not task:

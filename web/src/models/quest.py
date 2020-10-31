@@ -34,7 +34,16 @@ class Quest(db.Model):
     quests_shared = db.relationship("QuestShared", backref="quest", cascade="all")
     tasks = db.relationship("Task", backref="quest", cascade="all")
 
-    def __init__(self, user_id, content, category):
+    def __init__(self, user_id, content, category, description=None):
         self.user_id = user_id
         self.content = content
         self.category = category
+        self.description = description
+
+    def to_dict(self):
+        return dict(
+            id=self.user_id,
+            content=self.content,
+            category=self.category,
+            description=self.description,
+        )
