@@ -17,9 +17,15 @@ def get_quests():
 @quests.route("/quests", methods=["POST"])
 def post_quest():
     user_id = 1  # dummy
-    payload = request.json
-    content = payload.get("content")
-    category = payload.get("category")
+    try:
+        payload = request.json
+        content = payload.get("content")
+        category = payload.get("category")
+        if content is None or category is None:
+            raise ValueError("content or category is None")
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Bad request error"}), 400
 
     try:
         quest = Quest(user_id, content, category)
