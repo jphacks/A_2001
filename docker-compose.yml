@@ -1,0 +1,62 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - "10000:10000"
+    entrypoint: dockerize -wait http://web:8080 -wait http://frontend:3000 -wait tcp://db:3306 -timeout 300s -wait-retry-interval 30s
+    command:
+      - nginx
+      - -g
+      - daemon off;
+
+  web:
+    build:
+      dockerfile: Dockerfile
+      context: ./web
+    command: sh -c ./start.sh
+    environment:
+      APP_DATABASE_HOST: db
+      APP_DATABASE_NAME: todo
+      APP_DATABASE_USER: root
+      APP_DATABASE_PASSWORD: root
+      FLASK_ENV: development
+    expose:
+      - "8080"
+    volumes:
+      - ./web/src:/app
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    tty: true
+    volumes:
+      - ./frontend/app:/app
+    command: yarn dev
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    expose:
+      - "3000"
+    depends_on:
+      - web
+
+  db:
+    image: mysql:5.7
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo
+      MYSQL_PASSWORD: root
+      TZ: "Asia/Tokyo"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - "./db/data:/var/lib/mysql"
+      - "./db/my.cnf:/etc/mysql/conf.d/my.cnf"
+    expose:
+      - "3306"
