@@ -15,7 +15,7 @@ class Subtask(db.Model):
         nullable=False,
     )
     content = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(5000), nullable=False)
+    description = db.Column(db.String(5000))
     done = db.Column(db.Boolean, default=False)
     created_at = db.Column(
         db.DateTime,
@@ -30,7 +30,7 @@ class Subtask(db.Model):
         nullable=False,
     )
 
-    def __init__(self, quest_id, content, description):
-        self.quest_id = quest_id
+    def __init__(self, task_id, content, description):
+        self.task_id = task_id
         self.content = content
         self.description = description

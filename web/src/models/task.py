@@ -15,7 +15,7 @@ class Task(db.Model):
         nullable=False,
     )
     content = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.String(5000), nullable=False)
+    description = db.Column(db.String(5000))
     start = db.Column(db.DateTime)
     done = db.Column(db.Boolean, default=False)
     created_at = db.Column(
