@@ -38,3 +38,10 @@ class Quest(db.Model):
         self.user_id = user_id
         self.content = content
         self.category = category
+
+    def to_dict(self):
+        return dict(
+            id=self.user_id,
+            content=self.content,
+            category=self.category,
+        )
