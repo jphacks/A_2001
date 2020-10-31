@@ -3,7 +3,8 @@ import logging.handlers
 import datetime
 from flask import Flask, jsonify
 from .database import init_db
-from .blueprints import api
+from .blueprints import api, quests
+from .models import User, Quest, QuestShared, Task, Subtask
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
@@ -23,6 +24,7 @@ logger = logging.getLogger("app")
 logger.addHandler(handler)
 
 app.register_blueprint(api, url_prefix="/")
+app.register_blueprint(quests, url_prefix="/")
 
 init_db(app)
 
