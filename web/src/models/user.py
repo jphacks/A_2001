@@ -4,7 +4,11 @@ from sqlalchemy.dialects.mysql import INTEGER
 
 class User(db.Model):
     __tablename__ = "users"
-    id = db.Column(INTEGER(unsigned=True), primary_key=True, autoincrement=True)
+    id = db.Column(
+        INTEGER(unsigned=True),
+        primary_key=True,
+        autoincrement=True,
+    )
     uuid = db.Column(db.String(28), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     level = db.Column(INTEGER(unsigned=True), default=0)
@@ -22,6 +26,7 @@ class User(db.Model):
         server_onupdate=db.func.current_timestamp(),
         nullable=False,
     )
+    quests = db.relationship("Quest", backref="user", cascade="all")
 
     def __init__(self, uuid, name):
         self.uuid = uuid
