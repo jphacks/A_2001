@@ -45,4 +45,5 @@ class Quest(db.Model):
             id=self.user_id,
             content=self.content,
             category=self.category,
+            description=self.description,
         )
