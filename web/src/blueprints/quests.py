@@ -1,5 +1,6 @@
 import logging
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..models import Quest
 from ..database import db
 
@@ -8,15 +9,17 @@ logger = logging.getLogger("app")
 
 
 @quests.route("/quests", methods=["GET"])
+@jwt_required
 def get_quests():
-    user_id = 1  # dummy
+    user_id = get_jwt_identity()
     quests = Quest.query.filter(Quest.user_id == user_id).all()
     return jsonify({"quests": [quest.to_dict() for quest in quests]})
 
 
 @quests.route("/quests", methods=["POST"])
+@jwt_required
 def post_quest():
-    user_id = 1  # dummy
+    user_id = get_jwt_identity()
     try:
         payload = request.json
         content = payload.get("content")
