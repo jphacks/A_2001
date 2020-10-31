@@ -4,6 +4,7 @@ import datetime
 from flask import Flask, jsonify
 from .database import init_db
 from .blueprints import api
+from .models import User
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
