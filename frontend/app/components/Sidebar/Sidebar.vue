@@ -63,7 +63,13 @@
                   <template v-else>
                     <!-- eslint-disable -->
                     <SidebarNavItem :classes="item.class">
-                      <SidebarNavLink :name="childL1.name" :url="childL1.url" :icon="childL1.icon" :badge="childL1.badge" :variant="item.variant"/>
+                      <SidebarNavLink
+                        :name="childL1.name"
+                        :url="childL1.url"
+                        :icon="childL1.icon"
+                        :badge="childL1.badge"
+                        :variant="item.variant"
+                      />
                     </SidebarNavItem>
                     <!-- eslint-enable -->
                   </template>
@@ -115,12 +121,56 @@ export default {
     SidebarNavItem,
     SidebarNavLabel,
   },
-  props: {
-    navItems: {
-      type: Array,
-      required: true,
-      default: () => [],
-    },
+  data: function () {
+    return {
+      navItems: [
+        {
+          title: true,
+          name: 'Quest',
+          class: '',
+          wrapper: {
+            element: '',
+            attributes: {},
+          },
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'Charts',
+          url: '/charts',
+        },
+        {
+          name: 'ChartsChartsChartsChartsChartsChartsChartsChartsChartsCharts',
+          url: '/charts',
+        },
+      ],
+    };
   },
   methods: {
     handleClick(e) {
