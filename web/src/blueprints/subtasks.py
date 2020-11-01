@@ -123,3 +123,49 @@ def toggle_subtask(quest_id, task_id, subtask_id):
         return jsonify({"message": "Internal server error"}), 500
 
     return jsonify({}), 204
+
+
+@subtasks.route("/subtasks/<int:subtask_id>", methods=["PATCH"])
+@jwt_required
+def edit_subtask(quest_id, task_id, subtask_id):
+    user_id = get_jwt_identity()
+
+    # クエスト・タスクがログインユーザーのものかどうか
+    try:
+        find_quest_task(user_id, quest_id, task_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        subtask = Subtask.query.filter(
+            Subtask.id == subtask_id, Subtask.task_id == task_id
+        ).first()
+        if subtask is None:
+            return jsonify({"message": "Subtask not found"}), 404
+
+        # パラメータのバリデーション
+        if request.json is None:
+            return jsonify({"message": "Bad request error"}), 400
+
+        payload = request.json
+        content = payload.get("content")
+        description = payload.get("description")
+        if content is None and description is None:
+            return jsonify({"message": "Bad request error"}), 400
+
+        # サブタスクを更新する
+        if content is not None:
+            subtask.content = content
+        if description is not None:
+            subtask.description = description
+
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        db.session.rollback()
+        return jsonify({"message": "Internal server error"}), 500
+
+    return jsonify(subtask.to_dict()), 200

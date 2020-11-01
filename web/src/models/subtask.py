@@ -39,4 +39,5 @@ class Subtask(db.Model):
         return dict(
             id=self.id,
             content=self.content,
+            description="" if self.description is None else self.description,
         )
