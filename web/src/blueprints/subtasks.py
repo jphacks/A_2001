@@ -8,28 +8,39 @@ subtasks = Blueprint("subtasks", __name__)
 logger = logging.getLogger("app")
 
 
-@subtasks.route("/subtasks", methods=["POST"])
-@jwt_required
-def post_subtask(quest_id, task_id):
-    user_id = get_jwt_identity()
-
+def find_quest_task(user_id, quest_id, task_id):
     try:
         quest = Quest.query.filter(
             Quest.user_id == user_id,
             Quest.id == quest_id,
         ).first()
         if quest is None:
-            return jsonify({"message": "Quest not found"}), 404
+            raise ValueError("Quest not found")
 
         task = Task.query.filter(
             Task.quest_id == quest_id,
             Task.id == task_id,
         ).first()
         if task is None:
-            return jsonify({"message": "Task not found"}), 404
+            raise ValueError("Task not found")
+    except ValueError as ve:
+        raise ve
     except Exception as e:
         logger.error(e)
-        db.session.rollback()
+        raise Exception("Internal server error")
+
+
+@subtasks.route("/subtasks", methods=["POST"])
+@jwt_required
+def post_subtask(quest_id, task_id):
+    user_id = get_jwt_identity()
+
+    try:
+        find_quest_task(user_id, quest_id, task_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
         return jsonify({"message": "Internal server error"}), 500
 
     try:
@@ -38,8 +49,7 @@ def post_subtask(quest_id, task_id):
         description = payload.get("description")
         if content is None:
             raise ValueError("content is None")
-    except Exception as e:
-        logger.error(e)
+    except Exception:
         return jsonify({"message": "Bad request error"}), 400
 
     try:
