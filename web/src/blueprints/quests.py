@@ -44,21 +44,6 @@ def post_quest():
     return response, 201
 
 
-def find_quest(user_id, quest_id):
-    try:
-        quest = Quest.query.filter(
-            Quest.user_id == user_id,
-            Quest.id == quest_id,
-        ).first()
-        if quest is None:
-            raise ValueError("Quest not found")
-    except ValueError as ve:
-        raise ve
-    except Exception as e:
-        logger.error(e)
-        raise Exception("Internal server error")
-
-
 @quests.route("/quests/<int:quest_id>", methods=["DELETE"])
 @jwt_required
 def delete_quest(quest_id):
@@ -86,15 +71,9 @@ def delete_quest(quest_id):
 def edit_subtask(quest_id):
     user_id = get_jwt_identity()
     try:
-        find_quest(user_id, quest_id)
-    except ValueError as ve:
-        return jsonify({"message": str(ve)}), 404
-    except Exception as e:
-        logger.error(e)
-        return jsonify({"message": "Internal server error"}), 500
-
-    try:
-        quest = Quest.query.filter(Quest.id == quest_id).first()
+        quest = Quest.query.filter(
+            Quest.user_id == user_id, Quest.id == quest_id
+        ).first()
         if quest is None:
             return jsonify({"message": "Quest not found"}), 404
 
