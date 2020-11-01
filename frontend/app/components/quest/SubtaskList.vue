@@ -9,10 +9,12 @@
       <i class="fa fa-circle-o fa-lg"></i>
       <input
         v-model="subtask.name"
-        class="subtask-name"
+        class="subtask-name focusable"
         placeholder="サブタスクを入力"
         @blur="updateSubtask(subtask)"
         @keydown.enter="(e) => addNewSubtask(e, task)"
+        @keydown.prevent.down="moveNext"
+        @keydown.prevent.up="movePrev"
       />
     </b-list-group-item>
   </div>
@@ -20,7 +22,7 @@
 
 <script>
 export default {
-  props: ['task'],
+  props: ['task', 'moveNext', 'movePrev'],
   methods: {
     updateSubtask(subtask) {
       console.log('TODO: サブタスク編集APIへ', subtask);

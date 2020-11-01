@@ -2,20 +2,22 @@
   <div>
     <b-list-group>
       <div v-for="task in tasks" :key="task.id">
-        <b-list-group-item class="d-flex align-items-center" button>
+        <b-list-group-item class="d-flex align-items-center">
           <i class="fa fa-circle-o fa-lg"></i>
           <input
             v-model="task.name"
-            class="task-name"
+            class="task-name focusable"
             placeholder="タスクを入力"
             @blur="updateTask(task)"
             @keydown.enter="(e) => addNewTask(e, task.id)"
+            @keydown.prevent.down="moveNext"
+            @keydown.prevent.up="movePrev"
           />
           <b-badge variant="primary" pill class="ml-auto">{{
             task.subtasks.length
           }}</b-badge>
         </b-list-group-item>
-        <SubtaskList :task="task" />
+        <SubtaskList :task="task" :moveNext="moveNext" :movePrev="movePrev" />
       </div>
     </b-list-group>
   </div>
@@ -65,6 +67,16 @@ export default {
         };
         this.tasks.splice(index + 1, 0, newTask);
       }
+    },
+    moveNext(event) {
+      const elements = document.getElementsByClassName('focusable');
+      const index = [].findIndex.call(elements, (e) => e === event.target);
+      if (index + 1 < elements.length) elements[index + 1].focus();
+    },
+    movePrev(event) {
+      const elements = document.getElementsByClassName('focusable');
+      const index = [].findIndex.call(elements, (e) => e === event.target);
+      if (index - 1 >= 0) elements[index - 1].focus();
     },
   },
   mounted() {
