@@ -59,7 +59,7 @@ def authentification():
     )
 
 
-@auth.route("/auth/refresh", methods=["POST"])
+@auth.route("/auth/refresh", methods=["GET"])
 @jwt_refresh_token_required
 def refresh():
     current_user = get_jwt_identity()
