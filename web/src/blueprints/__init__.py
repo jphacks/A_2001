@@ -1,5 +1,5 @@
 from .api import api
-from .task import task
+from .tasks import task
 from .auth import auth
 from .quests import quests
 
