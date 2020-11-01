@@ -157,3 +157,39 @@ def edit_task(quest_id, task_id):
         return jsonify({"message": "Internal server error"}), 500
 
     return jsonify(task.to_dict()), 200
+
+
+@tasks.route("/tasks/<int:task_id>/done", methods=["PUT", "DELETE"])
+@jwt_required
+def toggle_task(quest_id, task_id):
+    user_id = get_jwt_identity()
+
+    try:
+        find_quest(user_id, quest_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        task = Task.query.filter(
+            Task.id == task_id,
+            Task.quest_id == quest_id,
+        ).first()
+        if task is None:
+            return jsonify({"message": "Task not found"}), 404
+
+        # パラメータのバリデーション
+        if request.json is None:
+            return jsonify({"message": "Bad request error"}), 400
+
+        task.done = request.method == "PUT"  # PUTならTrue, それ以外はFalse
+
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        db.session.rollback()
+        return jsonify({"message": "Internal server error"}), 500
+
+    return jsonify({}), 204

@@ -42,5 +42,6 @@ class Task(db.Model):
             id=self.id,
             content=self.content,
             description="" if self.description is None else self.description,
+            done=self.done,
             subtasks=[subtask.to_dict() for subtask in self.subtasks],
         )
