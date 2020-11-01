@@ -13,6 +13,7 @@ app.config["JSON_AS_ASCII"] = False
 app.config.from_object("app.config.Config")
 
 app.config["JWT_SECRET_KEY"] = "aqwsedrftgyhujkil"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 3600
 jwt = JWTManager(app)
 
 handler = logging.handlers.RotatingFileHandler(

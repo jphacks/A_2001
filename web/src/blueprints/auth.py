@@ -2,13 +2,15 @@ from flask import jsonify, Blueprint, request
 import logging
 from flask_jwt_extended import (
     jwt_required,
+    jwt_refresh_token_required,
+    get_jwt_identity,
     create_access_token,
+    create_refresh_token,
 )
 import os
 import firebase_admin
 from firebase_admin import auth as firebase_auth
 from firebase_admin import credentials
-import datetime
 from ..models import User
 from ..database import db
 
@@ -31,7 +33,6 @@ def authentification():
 
     uid = result["uid"]
     name = result["name"]
-    exp = result["exp"]
 
     user = db.session.query(User).filter_by(uuid=uid).first()
     # 新規登録
@@ -45,12 +46,25 @@ def authentification():
             db.session.rollback()
             return jsonify({"message": "Internal server error"}), 500
 
-    time_diff = datetime.datetime.fromtimestamp(exp) - datetime.datetime.now()
-    access_token = create_access_token(
-        identity=user.id,
-        expires_delta=time_diff,
+    access_token = create_access_token(identity=user.id)
+    refresh_token = create_refresh_token(identity=user.id)
+    return (
+        jsonify(
+            {
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+            }
+        ),
+        200,
     )
-    return jsonify({"token": access_token}), 200
+
+
+@auth.route("/auth/refresh", methods=["POST"])
+@jwt_refresh_token_required
+def refresh():
+    current_user = get_jwt_identity()
+    ret = {"access_token": create_access_token(identity=current_user)}
+    return jsonify(ret), 200
 
 
 @auth.route("/protected")
