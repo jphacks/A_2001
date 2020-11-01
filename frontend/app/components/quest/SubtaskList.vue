@@ -9,7 +9,7 @@
       <TaskListItem
         :task="subtask"
         :is-subtask="true"
-        @addNewSubTask="addNewSubtask"
+        @addNewSubtask="addNewSubtask"
         @updateTask="updateSubtask"
       />
     </b-list-group-item>
@@ -29,14 +29,14 @@ export default {
       console.log('TODO: サブタスク編集APIへ', subtask);
     },
     // taskに新しいsubtaskを追加
-    addNewSubtask(task) {
+    addNewSubtask() {
       // TODO: サブタスク登録APIへ
       const newSubtask = {
         id: '0100',
         name: 'Untitled',
         done: false,
       };
-      task.subtasks.push(newSubtask);
+      this.task.subtasks.push(newSubtask);
     },
   },
 };
