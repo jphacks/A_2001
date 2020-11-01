@@ -26,7 +26,14 @@ export default {
     },
     addNewTask(e) {
       if (e.keyCode !== 13) return; // 日本語入力確定を除外
-      this.$emit('addNewTask', e, this.task.id);
+
+      if (this.isSubtask) {
+        this.$emit('addNewSubtask', this.task.id);
+      } else if (e.shiftKey) {
+        this.$emit('addNewSubtask', this.task.id);
+      } else {
+        this.$emit('addNewTask', this.task.id);
+      }
     },
     moveNext(event) {
       const elements = document.getElementsByClassName('focusable');
@@ -41,7 +48,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 *:focus {

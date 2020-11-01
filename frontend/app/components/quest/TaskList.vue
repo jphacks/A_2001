@@ -4,9 +4,10 @@
       <div v-for="task in tasks" :key="task.id">
         <b-list-group-item>
           <TaskListItem
-            :isSubtask="false"
+            :is-subtask="false"
             :task="task"
             @addNewTask="addNewTask"
+            @addNewSubtask="addNewSubtask"
             @updateTask="updateTask"
           />
         </b-list-group-item>
@@ -34,31 +35,32 @@ export default {
     updateTask(task) {
       console.log('TODO: タスク編集APIへ', task);
     },
-    addNewTask(e, taskId) {
+    addNewTask(taskId) {
+      console.log(taskId);
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
 
-      if (e.shiftKey) {
-        // サブタスクを追加
-        // TODO: サブタスク登録APIへ
-        const newSubtask = {
-          id: '0100',
-          name: 'Untitled',
-          done: false,
-        };
-        this.tasks[index].subtasks.push(newSubtask);
-      } else {
-        // タスクを追加
-        // TODO: タスク登録APIへ
-        const newTask = {
-          id: '0100',
-          name: 'Untitled',
-          done: false,
-          subtasks: [],
-        };
-        this.tasks.splice(index + 1, 0, newTask);
-      }
+      const newTask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+        subtasks: [],
+      };
+      this.tasks.splice(index + 1, 0, newTask);
+    },
+    addNewSubtask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+
+      // TODO: サブタスク登録APIへ
+      const newSubtask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+      };
+      this.tasks[index].subtasks.push(newSubtask);
     },
   },
   mounted() {

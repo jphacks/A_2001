@@ -8,8 +8,8 @@
     >
       <TaskListItem
         :task="subtask"
-        :isSubtask="true"
-        @addNewTask="addNewSubtask"
+        :is-subtask="true"
+        @addNewSubTask="addNewSubtask"
         @updateTask="updateSubtask"
       />
     </b-list-group-item>
@@ -21,12 +21,15 @@ import TaskListItem from '~/components/quest/TaskListItem';
 
 export default {
   props: ['task'],
+  components: {
+    TaskListItem,
+  },
   methods: {
     updateSubtask(subtask) {
       console.log('TODO: サブタスク編集APIへ', subtask);
     },
     // taskに新しいsubtaskを追加
-    addNewSubtask(e, task) {
+    addNewSubtask(task) {
       // TODO: サブタスク登録APIへ
       const newSubtask = {
         id: '0100',
