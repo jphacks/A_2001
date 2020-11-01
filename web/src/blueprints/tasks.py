@@ -52,15 +52,11 @@ def post_task(quest_id):
     user_id = get_jwt_identity()
 
     try:
-        quest = Quest.query.filter(
-            Quest.user_id == user_id,
-            Quest.id == quest_id,
-        ).first()
-        if quest is None:
-            return jsonify({"message": "Quest not found"}), 404
+        find_quest(user_id, quest_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
     except Exception as e:
         logger.error(e)
-        db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
     try:
@@ -69,8 +65,7 @@ def post_task(quest_id):
         description = payload.get("description")
         if content is None:
             raise ValueError("content is None")
-    except Exception as e:
-        logger.error(e)
+    except Exception:
         return jsonify({"message": "Bad request error"}), 400
 
     try:
