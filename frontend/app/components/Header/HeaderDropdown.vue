@@ -11,6 +11,11 @@
     <b-dropdown-item @click="logout"
       ><i class="fa fa-lock"></i> Logout</b-dropdown-item
     >
+    <b-dropdown-item @click="logout">
+      <nuxt-link to="/login">
+        <i class="fa fa-unlock"></i> Login</nuxt-link
+      ></b-dropdown-item
+    >
   </b-nav-item-dropdown>
 </template>
 
