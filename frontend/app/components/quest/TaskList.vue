@@ -2,28 +2,22 @@
   <div>
     <b-list-group>
       <div v-for="task in tasks" :key="task.id">
-        <b-list-group-item class="d-flex align-items-center">
-          <i class="fa fa-circle-o fa-lg"></i>
-          <input
-            v-model="task.name"
-            class="task-name focusable"
-            placeholder="タスクを入力"
-            @blur="updateTask(task)"
-            @keydown.enter="(e) => addNewTask(e, task.id)"
-            @keydown.prevent.down="moveNext"
-            @keydown.prevent.up="movePrev"
+        <b-list-group-item>
+          <TaskListItem
+            :isSubtask="false"
+            :task="task"
+            @addNewTask="addNewTask"
+            @updateTask="updateTask"
           />
-          <b-badge variant="primary" pill class="ml-auto">{{
-            task.subtasks.length
-          }}</b-badge>
         </b-list-group-item>
-        <SubtaskList :task="task" :moveNext="moveNext" :movePrev="movePrev" />
+        <SubtaskList :task="task" />
       </div>
     </b-list-group>
   </div>
 </template>
 
 <script>
+import TaskListItem from '~/components/quest/TaskListItem';
 import SubtaskList from '~/components/quest/SubtaskList';
 
 export default {
@@ -33,16 +27,14 @@ export default {
     };
   },
   components: {
+    TaskListItem,
     SubtaskList,
   },
   methods: {
     updateTask(task) {
       console.log('TODO: タスク編集APIへ', task);
     },
-    // taskIdの下に新しいtask or subtaskを追加する
     addNewTask(e, taskId) {
-      if (e.keyCode !== 13) return; // 日本語入力確定を除外
-
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
@@ -67,16 +59,6 @@ export default {
         };
         this.tasks.splice(index + 1, 0, newTask);
       }
-    },
-    moveNext(event) {
-      const elements = document.getElementsByClassName('focusable');
-      const index = [].findIndex.call(elements, (e) => e === event.target);
-      if (index + 1 < elements.length) elements[index + 1].focus();
-    },
-    movePrev(event) {
-      const elements = document.getElementsByClassName('focusable');
-      const index = [].findIndex.call(elements, (e) => e === event.target);
-      if (index - 1 >= 0) elements[index - 1].focus();
     },
   },
   mounted() {
@@ -106,17 +88,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-*:focus {
-  outline: none;
-}
-
-.task-name {
-  width: 100%;
-  border: none;
-  background: none;
-  margin-left: 1em;
-  font-weight: bold;
-}
-</style>

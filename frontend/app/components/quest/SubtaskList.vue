@@ -6,31 +6,27 @@
       class="subtask d-flex align-items-center"
       button
     >
-      <i class="fa fa-circle-o fa-lg"></i>
-      <input
-        v-model="subtask.name"
-        class="subtask-name focusable"
-        placeholder="サブタスクを入力"
-        @blur="updateSubtask(subtask)"
-        @keydown.enter="(e) => addNewSubtask(e, task)"
-        @keydown.prevent.down="moveNext"
-        @keydown.prevent.up="movePrev"
+      <TaskListItem
+        :task="subtask"
+        :isSubtask="true"
+        @addNewTask="addNewSubtask"
+        @updateTask="updateSubtask"
       />
     </b-list-group-item>
   </div>
 </template>
 
 <script>
+import TaskListItem from '~/components/quest/TaskListItem';
+
 export default {
-  props: ['task', 'moveNext', 'movePrev'],
+  props: ['task'],
   methods: {
     updateSubtask(subtask) {
       console.log('TODO: サブタスク編集APIへ', subtask);
     },
     // taskに新しいsubtaskを追加
     addNewSubtask(e, task) {
-      if (e.keyCode !== 13) return; // 日本語入力確定を除外
-
       // TODO: サブタスク登録APIへ
       const newSubtask = {
         id: '0100',
@@ -50,12 +46,5 @@ export default {
 
 .subtask {
   text-indent: 1em;
-}
-
-.subtask-name {
-  width: 100%;
-  border: none;
-  background: none;
-  margin-left: 1em;
 }
 </style>
