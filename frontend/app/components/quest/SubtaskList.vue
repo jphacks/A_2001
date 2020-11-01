@@ -11,6 +11,7 @@
         :is-subtask="true"
         @addNewSubtask="addNewSubtask"
         @updateTask="updateSubtask"
+        @deleteTask="deleteSubtask"
       />
     </b-list-group-item>
   </div>
@@ -37,6 +38,12 @@ export default {
         done: false,
       };
       this.task.subtasks.push(newSubtask);
+    },
+    deleteSubtask(taskId) {
+      const index = this.task.subtasks.findIndex((subtask) => {
+        return subtask.id === taskId;
+      });
+      this.task.subtasks.splice(index, 1);
     },
   },
 };

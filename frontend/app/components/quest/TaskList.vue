@@ -9,6 +9,7 @@
             @addNewTask="addNewTask"
             @addNewSubtask="addNewSubtask"
             @updateTask="updateTask"
+            @deleteTask="deleteTask"
           />
         </b-list-group-item>
         <SubtaskList :task="task" />
@@ -61,6 +62,12 @@ export default {
         done: false,
       };
       this.tasks[index].subtasks.push(newSubtask);
+    },
+    deleteTask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      this.tasks.splice(index, 1);
     },
   },
   mounted() {
