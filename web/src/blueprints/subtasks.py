@@ -79,7 +79,9 @@ def delete_subtask(quest_id, task_id, subtask_id):
         return jsonify({"message": "Internal server error"}), 500
 
     try:
-        subtask = Subtask.query.filter(Subtask.id == subtask_id).first()
+        subtask = Subtask.query.filter(
+            Subtask.id == subtask_id, Subtask.task_id == task_id
+        ).first()
         if subtask is None:
             return jsonify({"message": "Subtask not found"}), 404
 
