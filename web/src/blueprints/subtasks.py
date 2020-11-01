@@ -10,7 +10,7 @@ logger = logging.getLogger("app")
 
 @subtasks.route("/subtasks", methods=["POST"])
 @jwt_required
-def post_quest(quest_id, task_id):
+def post_subtask(quest_id, task_id):
     user_id = get_jwt_identity()
 
     try:
