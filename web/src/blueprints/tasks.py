@@ -4,18 +4,49 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..models import Quest, Task
 from ..database import db
 
-task = Blueprint("tasks", __name__)
+tasks = Blueprint("tasks", __name__)
 logger = logging.getLogger("app")
 
 
-@task.route("/quests/<int:quest_id>/tasks", methods=["GET"])
+def find_quest(user_id, quest_id):
+    try:
+        quest = Quest.query.filter(
+            Quest.user_id == user_id,
+            Quest.id == quest_id,
+        ).first()
+        if quest is None:
+            raise ValueError("Quest not found")
+
+    except ValueError as ve:
+        raise ve
+    except Exception as e:
+        logger.error(e)
+        raise Exception("Internal server error")
+
+
+@tasks.route("/tasks", methods=["GET"])
+@jwt_required
 def get_task(quest_id):
-    quest_id = 1
-    tasks = Task.query.filter(Task.quest_id == quest_id).all()
-    return jsonify({"tasks": [task.to_dict() for task in tasks]})
+    user_id = get_jwt_identity()
+
+    try:
+        find_quest(user_id, quest_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        tasks = Task.query.filter(Task.quest_id == quest_id).all()
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    return jsonify({"tasks": [task.to_dict() for task in tasks]}), 200
 
 
-@task.route("/tasks", methods=["POST"])
+@tasks.route("/tasks", methods=["POST"])
 @jwt_required
 def post_task(quest_id):
     user_id = get_jwt_identity()
@@ -55,7 +86,7 @@ def post_task(quest_id):
     return response, 201
 
 
-@task.route("/tasks/<int:task_id>", methods=["DELETE"])
+@tasks.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
     task = Task.query.filter_by(id=task_id).first()
     if not task:

@@ -32,7 +32,15 @@ class Task(db.Model):
     )
     subtasks = db.relationship("Subtask", backref="task", cascade="all")
 
-    def __init__(self, quest_id, content, description):
+    def __init__(self, quest_id, content, description=None):
         self.quest_id = quest_id
         self.content = content
         self.description = description
+
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            content=self.content,
+            description="" if self.description is None else self.description,
+            subtasks=[subtask.to_dict() for subtask in self.subtasks],
+        )

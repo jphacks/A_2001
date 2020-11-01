@@ -1,6 +1,6 @@
 from .api import api
-from .tasks import task
+from .tasks import tasks
 from .auth import auth
 from .quests import quests
 
-__all__ = ["api", "auth", "quests", "task"]
+__all__ = ["api", "auth", "quests", "tasks"]
