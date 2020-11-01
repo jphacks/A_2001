@@ -9,6 +9,7 @@
             class="task-name"
             placeholder="タスクを入力"
             @blur="updateTask(task)"
+            @keydown.enter="(e) => addNewTask(e, task.id)"
           />
           <b-badge variant="primary" pill class="ml-auto">{{
             task.subtasks.length
@@ -35,6 +36,35 @@ export default {
   methods: {
     updateTask(task) {
       console.log('TODO: タスク編集APIへ', task);
+    },
+    // taskIdの下に新しいtask or subtaskを追加する
+    addNewTask(e, taskId) {
+      if (e.keyCode !== 13) return; // 日本語入力確定を除外
+
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+
+      if (e.shiftKey) {
+        // サブタスクを追加
+        // TODO: サブタスク登録APIへ
+        const newSubtask = {
+          id: '0100',
+          name: 'Untitled',
+          done: false,
+        };
+        this.tasks[index].subtasks.push(newSubtask);
+      } else {
+        // タスクを追加
+        // TODO: タスク登録APIへ
+        const newTask = {
+          id: '0100',
+          name: 'Untitled',
+          done: false,
+          subtasks: [],
+        };
+        this.tasks.splice(index + 1, 0, newTask);
+      }
     },
   },
   mounted() {

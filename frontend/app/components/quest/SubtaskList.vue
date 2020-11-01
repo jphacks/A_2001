@@ -12,6 +12,7 @@
         class="subtask-name"
         placeholder="サブタスクを入力"
         @blur="updateSubtask(subtask)"
+        @keydown.enter="(e) => addNewSubtask(e, task)"
       />
     </b-list-group-item>
   </div>
@@ -23,6 +24,18 @@ export default {
   methods: {
     updateSubtask(subtask) {
       console.log('TODO: サブタスク編集APIへ', subtask);
+    },
+    // taskに新しいsubtaskを追加
+    addNewSubtask(e, task) {
+      if (e.keyCode !== 13) return; // 日本語入力確定を除外
+
+      // TODO: サブタスク登録APIへ
+      const newSubtask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+      };
+      task.subtasks.push(newSubtask);
     },
   },
 };
