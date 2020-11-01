@@ -82,10 +82,25 @@ def post_task(quest_id):
 
 
 @tasks.route("/tasks/<int:task_id>", methods=["DELETE"])
-def delete_task(task_id):
-    task = Task.query.filter_by(id=task_id).first()
-    if not task:
-        return jsonify({"message": "task not found"}), 400
+@jwt_required
+def delete_task(quest_id, task_id):
+    user_id = get_jwt_identity()
+
+    try:
+        find_quest(user_id, quest_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    task = Task.query.filter(
+        Task.id == task_id,
+        Task.quest_id == quest_id,
+    ).first()
+
+    if task is None:
+        return jsonify({"message": "Task not found"}), 400
 
     try:
         db.session.delete(task)
@@ -95,4 +110,4 @@ def delete_task(task_id):
         db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
-    return jsonify({"message": "Internal server error"}), 201
+    return jsonify({}), 204
