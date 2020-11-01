@@ -1,4 +1,5 @@
 import logging
+import datetime
 from flask import jsonify, Blueprint, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..models import Quest, Task
@@ -180,10 +181,6 @@ def toggle_task(quest_id, task_id):
         if task is None:
             return jsonify({"message": "Task not found"}), 404
 
-        # パラメータのバリデーション
-        if request.json is None:
-            return jsonify({"message": "Bad request error"}), 400
-
         task.done = request.method == "PUT"  # PUTならTrue, それ以外はFalse
 
         db.session.commit()
@@ -193,3 +190,46 @@ def toggle_task(quest_id, task_id):
         return jsonify({"message": "Internal server error"}), 500
 
     return jsonify({}), 204
+
+
+@tasks.route("/tasks/<int:task_id>/time", methods=["PUT"])
+@jwt_required
+def measure_task(quest_id, task_id):
+    user_id = get_jwt_identity()
+
+    try:
+        find_quest(user_id, quest_id)
+    except ValueError as ve:
+        return jsonify({"message": str(ve)}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        task = Task.query.filter(
+            Task.id == task_id,
+            Task.quest_id == quest_id,
+        ).first()
+        if task is None:
+            return jsonify({"message": "Task not found"}), 404
+
+        is_start = task.start is None
+        if is_start:
+            task.start = datetime.datetime.now()
+        else:
+            start_time = task.start
+            now = datetime.datetime.now()
+            diff = (now - start_time).total_seconds() // 60
+            task.quest.exp += diff
+            task.start = None
+
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        db.session.rollback()
+        return jsonify({"message": "Internal server error"}), 500
+
+    if is_start:
+        return jsonify({}), 204
+    else:
+        return jsonify({"time": diff}), 200
