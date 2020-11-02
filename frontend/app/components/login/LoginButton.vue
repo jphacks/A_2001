@@ -1,5 +1,5 @@
 <template>
-  <div @click="signIn">
+  <div @click="logIn">
     <b-card :no-body="true">
       <b-card-body class="p-0 clearfix">
         <i
@@ -24,10 +24,31 @@ export default {
     },
   },
   methods: {
-    async signIn() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const result = await firebase.auth().signInWithRedirect(provider);
-      alert(result);
+    logIn() {
+      firebase
+        .auth()
+        .signInWithPopup(this.provider.provider)
+        .then((result) => {
+          const user = result.user;
+          // console.log('success : ' + user.uid + ' : ' + user.displayName);
+          user.getIdToken().then((idToken) => {
+            const params = { token: idToken };
+            this.$axios
+              .get('http://localhost:10000/api/auth', { params })
+              .then((res) => {
+                const accessToken = res.data.access_token;
+                const refreshToken = res.data.refresh_token;
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+              })
+              .catch(() => {
+                alert('error');
+              });
+          });
+        })
+        .catch(() => {
+          alert('login error');
+        });
     },
   },
 };

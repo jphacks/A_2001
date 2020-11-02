@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import firebase from 'firebase';
 import LoginButton from '~/components/login/LoginButton';
 export default {
   components: {
@@ -29,8 +30,16 @@ export default {
   data: () => {
     return {
       providers: [
-        { name: 'twitter', color: 'info' },
-        { name: 'google', color: 'danger' },
+        {
+          name: 'twitter',
+          color: 'info',
+          provider: new firebase.auth.TwitterAuthProvider(),
+        },
+        {
+          name: 'google',
+          color: 'danger',
+          provider: new firebase.auth.GoogleAuthProvider(),
+        },
       ],
     };
   },

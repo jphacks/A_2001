@@ -24,18 +24,13 @@
 import SubtaskList from '~/components/quest/SubtaskList';
 
 export default {
+  components: {
+    SubtaskList,
+  },
   data() {
     return {
       tasks: [],
     };
-  },
-  components: {
-    SubtaskList,
-  },
-  methods: {
-    updateTask(task) {
-      console.log('TODO: タスク編集APIへ', task);
-    },
   },
   mounted() {
     // TODO: APIからGET
@@ -61,6 +56,11 @@ export default {
       { id: '0003', name: 'asljfalksdfj', done: false, subtasks: [] },
       { id: '0004', name: 'hpighlrkjlkwjeafs', done: false, subtasks: [] },
     ];
+  },
+  methods: {
+    updateTask(task) {
+      console.log('TODO: タスク編集APIへ', task);
+    },
   },
 };
 </script>
