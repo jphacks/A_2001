@@ -17,7 +17,7 @@
     </button>
     <b-navbar-nav class="d-md-down-none">
       <b-nav-item class="px-3" to="/" nuxt>Status</b-nav-item>
-      <b-nav-item class="px-3" to="/" nuxt>Guild</b-nav-item>
+      <b-nav-item class="px-3" to="/guild" nuxt>Guild</b-nav-item>
       <b-nav-item class="px-3" to="/" nuxt>Ranking</b-nav-item>
     </b-navbar-nav>
 
