@@ -1,11 +1,38 @@
 import logging
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..models import Quest, QuestShared
 from ..database import db
 
 quests_shared = Blueprint("quests_shared", __name__)
 logger = logging.getLogger("app")
+
+
+@quests_shared.route("/share", methods=["GET"])
+def search_quest():
+    try:
+        word = request.args.get("word", type=str)
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Bad request error"}), 400
+
+    try:
+        found_quests = (
+            db.session.query(Quest, QuestShared)
+            .filter(
+                Quest.id == QuestShared.quest_id, Quest.content.like("%" + word + "%")
+            )
+            .all()
+        )
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+    return (
+        jsonify(
+            {"quests": [found_quest.Quest.to_dict() for found_quest in found_quests]}
+        ),
+        200,
+    )
 
 
 # TODO: Return more information (ex: downloads, rating)
