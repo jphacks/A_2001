@@ -2,17 +2,15 @@
   <div>
     <b-list-group>
       <div v-for="task in tasks" :key="task.id">
-        <b-list-group-item class="d-flex align-items-center" button>
-          <i class="fa fa-circle-o fa-lg"></i>
-          <input
-            v-model="task.name"
-            class="task-name"
-            placeholder="タスクを入力"
-            @blur="updateTask(task)"
+        <b-list-group-item>
+          <TaskListItem
+            :is-subtask="false"
+            :task="task"
+            @addNewTask="addNewTask"
+            @addNewSubtask="addNewSubtask"
+            @updateTask="updateTask"
+            @deleteTask="deleteTask"
           />
-          <b-badge variant="primary" pill class="ml-auto">{{
-            task.subtasks.length
-          }}</b-badge>
         </b-list-group-item>
         <SubtaskList :task="task" />
       </div>
@@ -21,6 +19,7 @@
 </template>
 
 <script>
+import TaskListItem from '~/components/quest/TaskListItem';
 import SubtaskList from '~/components/quest/SubtaskList';
 
 export default {
@@ -30,11 +29,45 @@ export default {
     };
   },
   components: {
+    TaskListItem,
     SubtaskList,
   },
   methods: {
     updateTask(task) {
       console.log('TODO: タスク編集APIへ', task);
+    },
+    addNewTask(taskId) {
+      console.log(taskId);
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+
+      const newTask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+        subtasks: [],
+      };
+      this.tasks.splice(index + 1, 0, newTask);
+    },
+    addNewSubtask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+
+      // TODO: サブタスク登録APIへ
+      const newSubtask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+      };
+      this.tasks[index].subtasks.push(newSubtask);
+    },
+    deleteTask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      this.tasks.splice(index, 1);
     },
   },
   mounted() {
@@ -64,17 +97,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-*:focus {
-  outline: none;
-}
-
-.task-name {
-  width: 100%;
-  border: none;
-  background: none;
-  margin-left: 1em;
-  font-weight: bold;
-}
-</style>

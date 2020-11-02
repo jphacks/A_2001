@@ -42,7 +42,7 @@ class Quest(db.Model):
 
     def to_dict(self):
         return dict(
-            id=self.user_id,
+            id=self.id,
             content=self.content,
             category=self.category,
             description=self.description,
