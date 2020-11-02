@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Quest
+from ..models import Quest, User
 from ..database import db
 
 users = Blueprint("users", __name__)
@@ -13,9 +13,12 @@ logger = logging.getLogger("app")
 def user_exp():
     user_id = get_jwt_identity()
     try:
-        payload = request.json
-        level = payload.get("level")
-        title = payload.get("title")
+        user_data = User.query.filter(User.id == user_id).first
+        if user_data is None:
+            return jsonify({"message": "User data not found"}), 500
+
+        level = user_data.level
+        title = user_data.title
         quests = Quest.query.filter(Quest.user_id == user_id).all()
 
         d = {que.id: {"exp": que.exp, "name": que.content} for que in quests}
