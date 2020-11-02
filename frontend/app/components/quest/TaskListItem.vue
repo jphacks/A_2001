@@ -1,9 +1,13 @@
 <template>
-  <div class="d-flex align-items-center">
+  <div
+    class="d-flex align-items-center"
+    @mouseover="focused = true"
+    @mouseout="focused = false"
+  >
     <i
       class="fa fa-lg"
       :class="task.done ? 'fa-check-circle-o' : 'fa-circle-o'"
-      @click="toggleTask"
+      @click="toggleDone"
     />
     <input
       v-model="task.name"
@@ -16,7 +20,13 @@
       @keydown.prevent.up="movePrev"
       @keydown.delete="deleteTask"
     />
-    <b-badge v-if="!isSubtask" variant="primary" pill class="ml-auto">{{
+    <i
+      v-show="!isSubtask && (doing || focused)"
+      class="fa mr-2 icon"
+      :class="doing ? 'fa-hourglass-start' : 'fa-hourglass-end'"
+      @click="toggleDoing"
+    ></i>
+    <b-badge v-if="!isSubtask" variant="primary" pill>{{
       task.subtasks.length
     }}</b-badge>
   </div>
@@ -24,6 +34,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      doing: false,
+      focused: false,
+    };
+  },
   props: ['task', 'isSubtask'],
   methods: {
     updateTask() {
@@ -56,8 +72,12 @@ export default {
         this.$emit('deleteTask', this.task.id);
       }
     },
-    toggleTask() {
+    toggleDone() {
       this.task.done = !this.task.done;
+    },
+    toggleDoing() {
+      // TODO: doing情報をthis.taskに持たせるべきか考える
+      this.doing = !this.doing;
     },
   },
 };
