@@ -4,7 +4,7 @@ import datetime
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from .database import init_db
-from .blueprints import api, auth, quests, subtasks
+from .blueprints import api, auth, quests, quests_shared, subtasks
 from .models import User, Quest, QuestShared, Task, Subtask
 from .seeder import register_command
 
@@ -31,6 +31,7 @@ logger.addHandler(handler)
 
 app.register_blueprint(api, url_prefix="/")
 app.register_blueprint(quests, url_prefix="/")
+app.register_blueprint(quests_shared, url_prefix="/quests/")
 app.register_blueprint(
     subtasks, url_prefix="/quests/<int:quest_id>/tasks/<int:task_id>/"
 )
