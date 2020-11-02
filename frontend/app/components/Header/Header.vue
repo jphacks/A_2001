@@ -22,14 +22,12 @@
     </b-navbar-nav>
 
     <b-navbar-nav class="ml-auto">
-      <b-button @click="userInfo">userinfo</b-button>
       <HeaderDropdown />
     </b-navbar-nav>
   </header>
 </template>
 
 <script>
-import firebase from 'firebase';
 import HeaderDropdown from './HeaderDropdown.vue';
 
 export default {
@@ -46,10 +44,6 @@ export default {
     mobileSidebarToggle(e) {
       e.preventDefault();
       document.body.classList.toggle('sidebar-mobile-show');
-    },
-    userInfo() {
-      console.log(localStorage.getItem('accessToken'));
-      console.log(localStorage.getItem('refreshToken'));
     },
   },
 };
