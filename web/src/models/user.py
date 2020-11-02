@@ -32,3 +32,9 @@ class User(db.Model):
         self.uuid = uuid
         self.name = name
         self.title = ""
+
+    def to_dict(self):
+        return dict(
+            name=self.name,
+            title=self.title,
+        )

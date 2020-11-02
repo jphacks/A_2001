@@ -10,6 +10,7 @@
       @keydown.enter="addNewTask"
       @keydown.prevent.down="moveNext"
       @keydown.prevent.up="movePrev"
+      @keydown.delete="deleteTask"
     />
     <b-badge v-if="!isSubtask" variant="primary" pill class="ml-auto">{{
       task.subtasks.length
@@ -44,6 +45,12 @@ export default {
       const elements = document.getElementsByClassName('focusable');
       const index = [].findIndex.call(elements, (e) => e === event.target);
       if (index - 1 >= 0) elements[index - 1].focus();
+    },
+    deleteTask() {
+      if (this.task.name.length === 0) {
+        // 0文字の状態でDELETEを押すと削除
+        this.$emit('deleteTask', this.task.id);
+      }
     },
   },
 };
