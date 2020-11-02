@@ -1,6 +1,10 @@
 <template>
   <div class="d-flex align-items-center">
-    <i class="fa fa-circle-o fa-lg"></i>
+    <i
+      class="fa fa-lg"
+      :class="task.done ? 'fa-check-circle-o' : 'fa-circle-o'"
+      @click="toggleTask"
+    />
     <input
       v-model="task.name"
       class="focusable"
@@ -51,6 +55,9 @@ export default {
         // 0文字の状態でDELETEを押すと削除
         this.$emit('deleteTask', this.task.id);
       }
+    },
+    toggleTask() {
+      this.task.done = !this.task.done;
     },
   },
 };
