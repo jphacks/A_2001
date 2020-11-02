@@ -10,10 +10,8 @@ logger = logging.getLogger("app")
 
 @quests_shared.route("/share", methods=["GET"])
 def search_quest():
-    try:
-        word = request.args.get("word", type=str)
-    except Exception as e:
-        logger.error(e)
+    word = request.args.get("word", type=str)
+    if word is None:
         return jsonify({"message": "Bad request error"}), 400
 
     try:
