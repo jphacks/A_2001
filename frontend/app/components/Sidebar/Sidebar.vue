@@ -107,6 +107,7 @@ import SidebarNavLink from './SidebarNavLink';
 import SidebarNavTitle from './SidebarNavTitle';
 import SidebarNavItem from './SidebarNavItem';
 import SidebarNavLabel from './SidebarNavLabel';
+
 export default {
   name: 'Sidebar',
   components: {
@@ -121,6 +122,13 @@ export default {
     SidebarNavItem,
     SidebarNavLabel,
   },
+  async fetch() {
+    const res = await this.$api
+      .$get('/api/quests')
+      .catch((err) => console.log(err));
+    console.log(res);
+  },
+  fetchOnServer: false,
   data() {
     return {
       navItems: [
