@@ -31,6 +31,7 @@ export default {
         .then((result) => {
           const user = result.user;
           // console.log('success : ' + user.uid + ' : ' + user.displayName);
+
           user.getIdToken().then((idToken) => {
             const params = { token: idToken };
             this.$axios
@@ -40,6 +41,13 @@ export default {
                 const refreshToken = res.data.refresh_token;
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                // access tokenとrefresh tokenだけ保持していればいいのでfirebaseからはすぐログアウト
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    this.$router.replace('/');
+                  });
               })
               .catch(() => {
                 alert('error');

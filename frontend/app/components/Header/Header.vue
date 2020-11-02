@@ -48,7 +48,6 @@ export default {
       document.body.classList.toggle('sidebar-mobile-show');
     },
     userInfo() {
-      console.log(firebase.auth().currentUser);
       console.log(localStorage.getItem('accessToken'));
       console.log(localStorage.getItem('refreshToken'));
     },
