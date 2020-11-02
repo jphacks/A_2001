@@ -1,5 +1,5 @@
 <template>
-  <div @click="logIn">
+  <div @click="login">
     <b-card :no-body="true">
       <b-card-body class="p-0 clearfix">
         <i
@@ -15,7 +15,6 @@
 
 <script>
 import firebase from 'firebase';
-
 export default {
   props: {
     provider: {
@@ -24,7 +23,7 @@ export default {
     },
   },
   methods: {
-    logIn() {
+    login() {
       firebase
         .auth()
         .signInWithPopup(this.provider.provider)
@@ -41,6 +40,7 @@ export default {
                 const refreshToken = res.data.refresh_token;
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                this.$store.commit('login/storeLogin');
                 // access tokenとrefresh tokenだけ保持していればいいのでfirebaseからはすぐログアウト
                 firebase
                   .auth()

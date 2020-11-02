@@ -24,6 +24,7 @@
 import firebase from 'firebase';
 import LoginButton from '~/components/login/LoginButton';
 export default {
+  layout: 'clean',
   components: {
     LoginButton,
   },
