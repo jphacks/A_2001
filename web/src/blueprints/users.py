@@ -13,9 +13,9 @@ logger = logging.getLogger("app")
 def user_exp():
     user_id = get_jwt_identity()
     try:
-        user_data = User.query.filter(User.id == user_id).first
+        user_data = User.query.filter(User.id == user_id).first()
         if user_data is None:
-            return jsonify({"message": "User data not found"}), 500
+            return jsonify({"message": "User data not found"}), 401
 
         level = user_data.level
         title = user_data.title
