@@ -32,7 +32,13 @@ export default {
   },
   methods: {
     updateSubtask(subtask) {
-      console.log('TODO: サブタスク編集APIへ', subtask);
+      const quest = this.$route.params.quest;
+      this.$api.$patch(
+        `/api/quests/${quest}/tasks/${this.task.id}/subtasks/${subtask.id}`,
+        {
+          name: subtask.name,
+        }
+      );
     },
     // taskに新しいsubtaskを追加
     addNewSubtask() {
