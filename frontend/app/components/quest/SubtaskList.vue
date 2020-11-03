@@ -62,7 +62,7 @@ export default {
         .$delete(
           `/api/quests/${quest}/tasks/${this.task.id}/subtasks/${taskId}`
         )
-        .then((res) => {
+        .then(() => {
           this.task.subtasks.splice(index, 1);
         })
         .catch((err) => console.log(err));

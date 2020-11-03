@@ -40,10 +40,11 @@ export default {
         name: task.name,
       });
     },
-    addNewTask(taskId) {
-      const index = this.tasks.findIndex((task) => {
-        return task.id === taskId;
-      });
+    // addNewTask(taskId) {
+    // const index = this.tasks.findIndex((task) => {
+    //   return task.id === taskId;
+    // });
+    addNewTask() {
       const quest = this.$route.params.quest;
       this.$api
         .$post(`/api/quests/${quest}/tasks`, {
@@ -79,7 +80,7 @@ export default {
       const quest = this.$route.params.quest;
       this.$api
         .$delete(`/api/quests/${quest}/tasks/${taskId}`)
-        .then((res) => {
+        .then(() => {
           this.tasks.splice(index, 1);
         })
         .catch((err) => console.log(err));
