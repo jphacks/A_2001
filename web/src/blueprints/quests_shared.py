@@ -17,9 +17,7 @@ def search_quest():
     try:
         found_quests = (
             db.session.query(Quest, QuestShared)
-            .filter(
-                Quest.id == QuestShared.quest_id, Quest.name.like("%" + word + "%")
-            )
+            .filter(Quest.id == QuestShared.quest_id, Quest.name.like("%" + word + "%"))
             .all()
         )
     except Exception as e:
