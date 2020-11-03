@@ -7,8 +7,8 @@
     <b-dropdown-item v-if="$store.state.login.isLoggedin" @click="logout"
       ><i class="fa fa-lock"></i> Logout</b-dropdown-item
     >
-    <b-dropdown-item v-else @click="login">
-      <i class="fa fa-unlock"></i> Login
+    <b-dropdown-item v-else
+      ><nuxt-link to="/login"> <i class="fa fa-unlock"></i> Login</nuxt-link>
     </b-dropdown-item>
   </b-nav-item-dropdown>
 </template>
@@ -24,9 +24,6 @@ export default {
       localStorage.setItem('accessToken', null);
       this.$store.commit('login/storeLogout');
       alert('logged out');
-    },
-    login() {
-      this.$router.push('/login');
     },
   },
 };

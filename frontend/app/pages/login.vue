@@ -34,12 +34,12 @@ export default {
         {
           name: 'twitter',
           color: 'info',
-          provider: new firebase.auth.TwitterAuthProvider(),
+          provider: firebase.auth.TwitterAuthProvider,
         },
         {
           name: 'google',
           color: 'danger',
-          provider: new firebase.auth.GoogleAuthProvider(),
+          provider: firebase.auth.GoogleAuthProvider,
         },
       ],
     };

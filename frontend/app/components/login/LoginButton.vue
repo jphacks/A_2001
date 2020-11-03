@@ -24,9 +24,10 @@ export default {
   },
   methods: {
     login() {
+      const p = new this.provider.provider();
       firebase
         .auth()
-        .signInWithPopup(this.provider.provider)
+        .signInWithPopup(p)
         .then((result) => {
           const user = result.user;
           // console.log('success : ' + user.uid + ' : ' + user.displayName);
