@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Quest
+from ..models import Quest, Task
 from ..database import db
 
 quests = Blueprint("quests", __name__)
@@ -13,7 +13,11 @@ logger = logging.getLogger("app")
 def get_quest(quest_id):
     user_id = get_jwt_identity()
     quest = Quest.query.filter(Quest.user_id == user_id, Quest.id == quest_id).first()
-    return jsonify({"quest": quest.to_dict()}), 200
+    quest_info = quest.to_dict()
+    quest_info["undone"] = Task.query.filter(
+        Task.quest_id == quest.id, Task.done.is_(False)
+    ).count()
+    return jsonify({"quest": quest_info}), 200
 
 
 @quests.route("/quests", methods=["GET"])
@@ -21,7 +25,19 @@ def get_quest(quest_id):
 def get_quests():
     user_id = get_jwt_identity()
     quests = Quest.query.filter(Quest.user_id == user_id).all()
-    return jsonify({"quests": [quest.to_dict() for quest in quests]}), 200
+    undone_dict = {quest.id: 0 for quest in quests}
+    tasks = Task.query.filter(
+        Task.quest_id.in_(undone_dict.keys()), Task.done.is_(False)
+    )
+    for task in tasks:
+        undone_dict[task.quest_id] += not task.done
+
+    quests_info = []
+    for quest in quests:
+        quest_info = quest.to_dict()
+        quest_info["undone"] = undone_dict[quest.id]
+        quests_info.append(quest_info)
+    return jsonify({"quests": quests_info}), 200
 
 
 @quests.route("/quests", methods=["POST"])
