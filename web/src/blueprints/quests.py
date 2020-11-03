@@ -8,6 +8,14 @@ quests = Blueprint("quests", __name__)
 logger = logging.getLogger("app")
 
 
+@quests.route("/quests/<int:quest_id>", methods=["GET"])
+@jwt_required
+def get_quest(quest_id):
+    user_id = get_jwt_identity()
+    quest = Quest.query.filter(Quest.user_id == user_id, Quest.id == quest_id).first()
+    return jsonify({"quest": quest.to_dict()}), 200
+
+
 @quests.route("/quests", methods=["GET"])
 @jwt_required
 def get_quests():
