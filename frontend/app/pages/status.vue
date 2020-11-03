@@ -25,11 +25,6 @@ export default {
     ExperienceRadarChart,
     ExperiencePieChart,
   },
-  data() {
-    return {
-      status: {},
-    };
-  },
   fetch() {
     // TODO: APIから取ってくる
     this.status = {
@@ -53,6 +48,11 @@ export default {
       },
       level: 0,
       title: 'Vueマスター',
+    };
+  },
+  data() {
+    return {
+      status: {},
     };
   },
   fetchOnServer: false,

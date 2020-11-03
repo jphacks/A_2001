@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     login() {
-      const p = new this.provider.provider();
+      const p = new this.provider.Provider();
       firebase
         .auth()
         .signInWithPopup(p)

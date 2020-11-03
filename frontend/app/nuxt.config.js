@@ -37,7 +37,7 @@ export default {
   plugins: [
     { src: '~/plugins/localStorage.js', ssr: false },
     { src: '~/plugins/firebase.js' },
-    '~/plugins/axios'
+    '~/plugins/axios',
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

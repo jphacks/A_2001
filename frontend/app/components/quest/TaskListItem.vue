@@ -34,13 +34,13 @@
 
 <script>
 export default {
+  props: ['task', 'isSubtask'],
   data() {
     return {
       doing: false,
       focused: false,
     };
   },
-  props: ['task', 'isSubtask'],
   methods: {
     updateTask() {
       this.$emit('updateTask', this.task);
