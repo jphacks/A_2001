@@ -23,24 +23,14 @@ export default {
     };
   },
   mounted() {
-    const promises = [];
-    promises.push(
-      this.$api
-        .$get(`/api/quests/${this.$route.params.quest}`)
-        .then((res) => {
-          this.quest = res.quest;
-        })
-        .catch((err) => console.log(err))
-    );
-    promises.push(
-      this.$api
-        .$get(`/api/quests/${this.$route.params.quest}/tasks`)
-        .then((res) => {
-          this.tasks = res.tasks;
-        })
-        .catch((err) => console.log(err))
-    );
-    Promise.all(promises);
+    this.$api
+      .$get(`/api/quests/${this.$route.params.quest}`)
+      .then((res) => {
+        const quest = res.quest;
+        this.quest = quest;
+        this.tasks = quest.tasks;
+      })
+      .catch((err) => console.log(err));
   },
 };
 </script>
