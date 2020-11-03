@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-jumbotron :header="questName" lead="questの説明">
-      <TaskList />
+    <b-jumbotron :header="quest.name" :lead="quest.description">
+      <TaskList :tasks="tasks" />
     </b-jumbotron>
   </div>
 </template>
@@ -13,10 +13,34 @@ export default {
   component: {
     TaskList,
   },
-  asyncData({ params }) {
+  data() {
     return {
-      questName: params.quest,
+      quest: {
+        name: '',
+        description: '',
+      },
+      tasks: [],
     };
+  },
+  mounted() {
+    const promises = [];
+    promises.push(
+      this.$api
+        .$get(`/api/quests/${this.$route.params.quest}`)
+        .then((res) => {
+          this.quest = res.quest;
+        })
+        .catch((err) => console.log(err))
+    );
+    promises.push(
+      this.$api
+        .$get(`/api/quests/${this.$route.params.quest}/tasks`)
+        .then((res) => {
+          this.tasks = res.tasks;
+        })
+        .catch((err) => console.log(err))
+    );
+    Promise.all(promises);
   },
 };
 </script>
