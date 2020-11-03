@@ -45,13 +45,18 @@ export default {
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
-      const newTask = {
-        id: '0100',
-        name: 'Untitled',
-        done: false,
-        subtasks: [],
-      };
-      this.tasks.splice(index + 1, 0, newTask);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$post(`/api/quests/${quest}/tasks`, {
+          name: 'Untitled',
+          description: '',
+        })
+        .then((res) => {
+          this.tasks.push(res);
+          // サーバー側で順序は保存していないので途中挿入はしないことにする
+          // this.tasks.splice(index + 1, 0, res);
+        })
+        .catch((err) => console.log(err));
     },
     addNewSubtask(taskId) {
       const index = this.tasks.findIndex((task) => {
