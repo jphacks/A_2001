@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Quest, QuestShared
+from ..models import Quest, QuestShared, Task, Subtask
 from ..database import db
 
 quests_shared = Blueprint("quests_shared", __name__)
@@ -47,11 +47,35 @@ def clone_quest(quest_id):
         logger.error(e)
         return jsonify({"message": "Internal server error"}), 500
 
-    quest = Quest.query.filter(Quest.id == quest_id).first()
-    new_quest = Quest(user_id, quest.content, quest.category, quest.description)
     try:
+        quest = Quest.query.filter(Quest.id == quest_id).first()
+        new_quest = Quest(user_id, quest.content, quest.category, quest.description)
         db.session.add(new_quest)
         db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        tasks = Task.query.filter(Task.quest_id == quest_id).all()
+        task_id_map = {}
+        for task in tasks:
+            new_task = Task(new_quest.id, task.content, task.description)
+            db.session.add(new_task)
+            db.session.commit()
+            task_id_map[task.id] = new_task.id
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    try:
+        subtasks = Subtask.query.filter(Subtask.task_id.in_(task_id_map.keys())).all()
+        for subtask in subtasks:
+            new_subtask = Subtask(
+                task_id_map[subtask.task_id], subtask.content, subtask.description
+            )
+            db.session.add(new_subtask)
+            db.session.commit()
     except Exception as e:
         logger.error(e)
         return jsonify({"message": "Internal server error"}), 500
