@@ -33,6 +33,32 @@ def search_quest():
     )
 
 
+@quests_shared.route("/<int:quest_id>/clone", methods=["GET"])
+@jwt_required
+def clone_quest(quest_id):
+    user_id = get_jwt_identity()
+    try:
+        quest_shared = QuestShared.query.filter(
+            QuestShared.quest_id == quest_id,
+        ).first()
+        if quest_shared is None:
+            return jsonify({"message": "Quest not found"}), 404
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    quest = Quest.query.filter(Quest.id == quest_id).first()
+    new_quest = Quest(user_id, quest.content, quest.category, quest.description)
+    try:
+        db.session.add(new_quest)
+        db.session.commit()
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
+    return jsonify(new_quest.to_dict()), 200
+
+
 # TODO: Return more information (ex: downloads, rating)
 @quests_shared.route("/<int:quest_id>/share", methods=["GET"])
 def get_quest(quest_id):
