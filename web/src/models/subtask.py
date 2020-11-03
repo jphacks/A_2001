@@ -14,7 +14,7 @@ class Subtask(db.Model):
         db.ForeignKey("tasks.id", ondelete="cascade", onupdate="cascade"),
         nullable=False,
     )
-    content = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(5000))
     done = db.Column(db.Boolean, default=False)
     created_at = db.Column(
@@ -30,15 +30,15 @@ class Subtask(db.Model):
         nullable=False,
     )
 
-    def __init__(self, task_id, content, description=None):
+    def __init__(self, task_id, name, description=None):
         self.task_id = task_id
-        self.content = content
+        self.name = name
         self.description = description
 
     def to_dict(self):
         return dict(
             id=self.id,
-            name=self.content,
+            name=self.name,
             description="" if self.description is None else self.description,
             done=self.done,
         )

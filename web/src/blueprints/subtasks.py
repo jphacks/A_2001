@@ -45,15 +45,15 @@ def post_subtask(quest_id, task_id):
 
     try:
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         description = payload.get("description")
-        if content is None:
-            raise ValueError("content is None")
+        if name is None:
+            raise ValueError("name is None")
     except Exception:
         return jsonify({"message": "Bad request error"}), 400
 
     try:
-        subtask = Subtask(task_id, content, description)
+        subtask = Subtask(task_id, name, description)
         db.session.add(subtask)
         db.session.commit()
     except Exception as e:
@@ -151,14 +151,14 @@ def edit_subtask(quest_id, task_id, subtask_id):
             return jsonify({"message": "Bad request error"}), 400
 
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         description = payload.get("description")
-        if content is None and description is None:
+        if name is None and description is None:
             return jsonify({"message": "Bad request error"}), 400
 
         # サブタスクを更新する
-        if content is not None:
-            subtask.content = content
+        if name is not None:
+            subtask.name = name
         if description is not None:
             subtask.description = description
 

@@ -21,7 +21,7 @@ def user_exp():
         title = user_data.title
         quests = Quest.query.filter(Quest.user_id == user_id).all()
 
-        d = {que.id: {"exp": que.exp, "name": que.content} for que in quests}
+        d = {que.id: {"exp": que.exp, "name": que.name} for que in quests}
 
     except Exception as e:
         logger.error(e)

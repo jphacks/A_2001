@@ -18,7 +18,7 @@ def search_quest():
         found_quests = (
             db.session.query(Quest, QuestShared)
             .filter(
-                Quest.id == QuestShared.quest_id, Quest.content.like("%" + word + "%")
+                Quest.id == QuestShared.quest_id, Quest.name.like("%" + word + "%")
             )
             .all()
         )
@@ -49,7 +49,7 @@ def clone_quest(quest_id):
 
     try:
         quest = Quest.query.filter(Quest.id == quest_id).first()
-        new_quest = Quest(user_id, quest.content, quest.category, quest.description)
+        new_quest = Quest(user_id, quest.name, quest.category, quest.description)
         db.session.add(new_quest)
         db.session.commit()
     except Exception as e:
@@ -60,7 +60,7 @@ def clone_quest(quest_id):
         tasks = Task.query.filter(Task.quest_id == quest_id).all()
         task_id_map = {}
         for task in tasks:
-            new_task = Task(new_quest.id, task.content, task.description)
+            new_task = Task(new_quest.id, task.name, task.description)
             db.session.add(new_task)
             db.session.commit()
             task_id_map[task.id] = new_task.id
@@ -72,7 +72,7 @@ def clone_quest(quest_id):
         subtasks = Subtask.query.filter(Subtask.task_id.in_(task_id_map.keys())).all()
         for subtask in subtasks:
             new_subtask = Subtask(
-                task_id_map[subtask.task_id], subtask.content, subtask.description
+                task_id_map[subtask.task_id], subtask.name, subtask.description
             )
             db.session.add(new_subtask)
             db.session.commit()

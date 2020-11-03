@@ -54,7 +54,7 @@ def seed_user():
 def seed_quest():
     quests = [
         Quest(
-            content=f"quest_content{i}",
+            name=f"quest_name{i}",
             category=f"category{i}",
             user_id=i % 10 + 1,
             description=f"quest_description{i}",
@@ -67,7 +67,7 @@ def seed_quest():
 def seed_task():
     tasks = [
         Task(
-            content=f"task_content{i}",
+            name=f"task_name{i}",
             description=f"task_description{i}",
             quest_id=i % 20 + 1,
         )
@@ -79,7 +79,7 @@ def seed_task():
 def seed_subtask():
     subtasks = [
         Subtask(
-            content=f"subtask_content{i}",
+            name=f"subtask_name{i}",
             description=f"subtask_description{i}",
             task_id=i % 40 + 1,
         )

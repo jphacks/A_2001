@@ -14,7 +14,7 @@ class Quest(db.Model):
         db.ForeignKey("users.id", ondelete="cascade", onupdate="cascade"),
         nullable=False,
     )
-    content = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(5000))
     exp = db.Column(INTEGER(unsigned=True), default=0)
@@ -34,16 +34,16 @@ class Quest(db.Model):
     quests_shared = db.relationship("QuestShared", backref="quest", cascade="all")
     tasks = db.relationship("Task", backref="quest", cascade="all")
 
-    def __init__(self, user_id, content, category, description=None):
+    def __init__(self, user_id, name, category, description=None):
         self.user_id = user_id
-        self.content = content
+        self.name = name
         self.category = category
         self.description = description
 
     def to_dict(self):
         return dict(
             id=self.id,
-            name=self.content,
+            name=self.name,
             category=self.category,
             description=self.description,
         )

@@ -46,17 +46,17 @@ def post_quest():
     user_id = get_jwt_identity()
     try:
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         category = payload.get("category")
         description = payload.get("description")
-        if content is None or category is None:
-            raise ValueError("content or category is None")
+        if name is None or category is None:
+            raise ValueError("name or category is None")
     except Exception as e:
         logger.error(e)
         return jsonify({"message": "Bad request error"}), 400
 
     try:
-        quest = Quest(user_id, content, category, description)
+        quest = Quest(user_id, name, category, description)
         db.session.add(quest)
         db.session.commit()
     except Exception as e:
@@ -104,14 +104,14 @@ def edit_quest(quest_id):
         if request.json is None:
             return jsonify({"message": "Bad request error"}), 400
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         category = payload.get("category")
         description = payload.get("description")
-        if content is None and category is None and description is None:
+        if name is None and category is None and description is None:
             return jsonify({"message": "Bad request error"}), 400
 
-        if content is not None:
-            quest.content = content
+        if name is not None:
+            quest.name = name
         if category is not None:
             quest.category = category
         if description is not None:
