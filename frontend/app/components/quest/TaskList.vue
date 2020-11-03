@@ -35,7 +35,10 @@ export default {
   },
   methods: {
     updateTask(task) {
-      console.log('TODO: タスク編集APIへ', task);
+      const quest = this.$route.params.quest;
+      this.$api.$patch(`/api/quests/${quest}/tasks/${task.id}`, {
+        name: task.name,
+      });
     },
     addNewTask(taskId) {
       console.log(taskId);
