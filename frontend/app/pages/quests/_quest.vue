@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron :header="quest.content" :lead="quest.description">
+    <b-jumbotron :header="quest.name" :lead="quest.description">
       <TaskList :tasks="tasks" />
     </b-jumbotron>
   </div>
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       quest: {
-        content: '',
+        name: '',
         description: '',
       },
       tasks: [],
