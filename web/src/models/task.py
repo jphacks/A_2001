@@ -14,7 +14,7 @@ class Task(db.Model):
         db.ForeignKey("quests.id", ondelete="cascade", onupdate="cascade"),
         nullable=False,
     )
-    content = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(5000))
     start = db.Column(db.DateTime)
     done = db.Column(db.Boolean, default=False)
@@ -32,15 +32,15 @@ class Task(db.Model):
     )
     subtasks = db.relationship("Subtask", backref="task", cascade="all")
 
-    def __init__(self, quest_id, content, description=None):
+    def __init__(self, quest_id, name, description=None):
         self.quest_id = quest_id
-        self.content = content
+        self.name = name
         self.description = description
 
     def to_dict(self):
         return dict(
             id=self.id,
-            name=self.content,
+            name=self.name,
             description="" if self.description is None else self.description,
             done=self.done,
             subtasks=[subtask.to_dict() for subtask in self.subtasks],

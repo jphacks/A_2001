@@ -62,15 +62,15 @@ def post_task(quest_id):
 
     try:
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         description = payload.get("description")
-        if content is None:
-            raise ValueError("content is None")
+        if name is None:
+            raise ValueError("name is None")
     except Exception:
         return jsonify({"message": "Bad request error"}), 400
 
     try:
-        task = Task(quest_id, content, description)
+        task = Task(quest_id, name, description)
         db.session.add(task)
         db.session.commit()
     except Exception as e:
@@ -140,14 +140,14 @@ def edit_task(quest_id, task_id):
             return jsonify({"message": "Bad request error"}), 400
 
         payload = request.json
-        content = payload.get("content")
+        name = payload.get("name")
         description = payload.get("description")
-        if content is None and description is None:
+        if name is None and description is None:
             return jsonify({"message": "Bad request error"}), 400
 
         # タスクを更新する
-        if content is not None:
-            task.content = content
+        if name is not None:
+            task.name = name
         if description is not None:
             task.description = description
 
