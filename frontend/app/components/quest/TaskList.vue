@@ -41,7 +41,6 @@ export default {
       });
     },
     addNewTask(taskId) {
-      console.log(taskId);
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
@@ -62,13 +61,16 @@ export default {
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
-      // TODO: サブタスク登録APIへ
-      const newSubtask = {
-        id: '0100',
-        name: 'Untitled',
-        done: false,
-      };
-      this.tasks[index].subtasks.push(newSubtask);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$post(`/api/quests/${quest}/tasks/${taskId}/subtasks`, {
+          name: 'Untitled',
+          description: '',
+        })
+        .then((res) => {
+          this.tasks[index].subtasks.push(res);
+        })
+        .catch((err) => console.log(err));
     },
     deleteTask(taskId) {
       const index = this.tasks.findIndex((task) => {
