@@ -61,7 +61,7 @@ export default {
       { divider: true },
       ...res.quests.map((e) => ({
         id: e.id,
-        name: e.content,
+        name: e.name,
         url: '/quests/' + e.id,
         badge: {
           variant: 'primary',
