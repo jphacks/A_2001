@@ -76,7 +76,13 @@ export default {
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
-      this.tasks.splice(index, 1);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$delete(`/api/quests/${quest}/tasks/${taskId}`)
+        .then((res) => {
+          this.tasks.splice(index, 1);
+        })
+        .catch((err) => console.log(err));
     },
   },
 };
