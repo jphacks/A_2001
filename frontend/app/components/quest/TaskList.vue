@@ -33,10 +33,41 @@ export default {
     TaskListItem,
     SubtaskList,
   },
-  data() {
-    return {
-      tasks: [],
-    };
+  methods: {
+    updateTask(task) {
+      console.log('TODO: タスク編集APIへ', task);
+    },
+    addNewTask(taskId) {
+      console.log(taskId);
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      const newTask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+        subtasks: [],
+      };
+      this.tasks.splice(index + 1, 0, newTask);
+    },
+    addNewSubtask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      // TODO: サブタスク登録APIへ
+      const newSubtask = {
+        id: '0100',
+        name: 'Untitled',
+        done: false,
+      };
+      this.tasks[index].subtasks.push(newSubtask);
+    },
+    deleteTask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      this.tasks.splice(index, 1);
+    },
   },
 };
 </script>
