@@ -65,7 +65,7 @@ export default {
         url: '/quests/' + e.id,
         badge: {
           variant: 'primary',
-          text: 3,
+          text: e.undone,
         },
       })),
     ];
