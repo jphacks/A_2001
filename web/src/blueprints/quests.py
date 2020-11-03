@@ -8,12 +8,20 @@ quests = Blueprint("quests", __name__)
 logger = logging.getLogger("app")
 
 
+@quests.route("/quests/<int:quest_id>", methods=["GET"])
+@jwt_required
+def get_quest(quest_id):
+    user_id = get_jwt_identity()
+    quest = Quest.query.filter(Quest.user_id == user_id, Quest.id == quest_id).first()
+    return jsonify({"quest": quest.to_dict()}), 200
+
+
 @quests.route("/quests", methods=["GET"])
 @jwt_required
 def get_quests():
     user_id = get_jwt_identity()
     quests = Quest.query.filter(Quest.user_id == user_id).all()
-    return jsonify({"quests": [quest.to_dict() for quest in quests]})
+    return jsonify({"quests": [quest.to_dict() for quest in quests]}), 200
 
 
 @quests.route("/quests", methods=["POST"])
@@ -68,7 +76,7 @@ def delete_quest(quest_id):
 
 @quests.route("/quests/<int:quest_id>", methods=["PATCH"])
 @jwt_required
-def edit_subtask(quest_id):
+def edit_quest(quest_id):
     user_id = get_jwt_identity()
     try:
         quest = Quest.query.filter(

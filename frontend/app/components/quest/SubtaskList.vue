@@ -3,7 +3,7 @@
     <b-list-group-item
       v-for="subtask in task.subtasks"
       :key="subtask.id"
-      class="subtask d-flex align-items-center"
+      class="subtask"
       button
     >
       <TaskListItem
