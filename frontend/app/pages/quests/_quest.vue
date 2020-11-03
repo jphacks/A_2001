@@ -22,7 +22,6 @@ export default {
       tasks: [],
     };
   },
-  fetchOnServer: false,
   mounted() {
     const promises = [];
     promises.push(
