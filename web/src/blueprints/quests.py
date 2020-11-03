@@ -14,9 +14,12 @@ def get_quest(quest_id):
     user_id = get_jwt_identity()
     quest = Quest.query.filter(Quest.user_id == user_id, Quest.id == quest_id).first()
     quest_info = quest.to_dict()
-    quest_info["undone"] = Task.query.filter(
-        Task.quest_id == quest.id, Task.done.is_(False)
-    ).count()
+
+    tasks_info = []
+    tasks = Task.query.filter(Task.quest_id == quest_id)
+    for task in tasks:
+        tasks_info.append(task.to_dict())
+    quest_info["tasks"] = tasks_info
     return jsonify({"quest": quest_info}), 200
 
 
