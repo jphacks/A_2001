@@ -24,6 +24,7 @@ import SubtaskList from '~/components/quest/SubtaskList';
 
 export default {
   components: {
+    TaskListItem,
     SubtaskList,
   },
   data() {
