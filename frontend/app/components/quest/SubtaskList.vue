@@ -42,7 +42,6 @@ export default {
     },
     // taskに新しいsubtaskを追加
     addNewSubtask() {
-      // TODO: サブタスク登録APIへ
       const quest = this.$route.params.quest;
       this.$api
         .$post(`/api/quests/${quest}/tasks/${this.task.id}/subtasks`, {
@@ -58,7 +57,15 @@ export default {
       const index = this.task.subtasks.findIndex((subtask) => {
         return subtask.id === taskId;
       });
-      this.task.subtasks.splice(index, 1);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$delete(
+          `/api/quests/${quest}/tasks/${this.task.id}/subtasks/${taskId}`
+        )
+        .then((res) => {
+          this.task.subtasks.splice(index, 1);
+        })
+        .catch((err) => console.log(err));
     },
   },
 };
