@@ -38,7 +38,7 @@ class Subtask(db.Model):
     def to_dict(self):
         return dict(
             id=self.id,
-            content=self.content,
+            name=self.content,
             description="" if self.description is None else self.description,
             done=self.done,
         )
