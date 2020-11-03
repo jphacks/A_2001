@@ -1,0 +1,64 @@
+<template>
+  <div @click="login">
+    <b-card :no-body="true">
+      <b-card-body class="p-0 clearfix">
+        <i
+          :class="`fa fa-${provider.name} bg-${provider.color} p-3 font-2xl mr-3 float-left `"
+        ></i>
+        <div :class="`h5 text-${provider.color} mb-0 pt-3`">
+          {{ provider.name }}でログイン
+        </div>
+      </b-card-body>
+    </b-card>
+  </div>
+</template>
+
+<script>
+import firebase from 'firebase';
+export default {
+  props: {
+    provider: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    login() {
+      const p = new this.provider.Provider();
+      firebase
+        .auth()
+        .signInWithPopup(p)
+        .then((result) => {
+          const user = result.user;
+          // console.log('success : ' + user.uid + ' : ' + user.displayName);
+
+          user.getIdToken().then((idToken) => {
+            const params = { token: idToken };
+            this.$axios
+              .get('http://localhost:10000/api/auth', { params })
+              .then((res) => {
+                const accessToken = res.data.access_token;
+                const refreshToken = res.data.refresh_token;
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                this.$store.commit('login/storeLogin');
+                // access tokenとrefresh tokenだけ保持していればいいのでfirebaseからはすぐログアウト
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    this.$router.replace('/');
+                  });
+              })
+              .catch(() => {
+                alert('error');
+              });
+          });
+        })
+        .catch(() => {
+          alert('login error');
+        });
+    },
+  },
+};
+</script>

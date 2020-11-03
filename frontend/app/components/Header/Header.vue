@@ -35,12 +35,12 @@ export default {
   components: {
     HeaderDropdown,
   },
+
   methods: {
     sidebarToggle(e) {
       e.preventDefault();
       document.body.classList.toggle('sidebar-hidden');
     },
-
     mobileSidebarToggle(e) {
       e.preventDefault();
       document.body.classList.toggle('sidebar-mobile-show');

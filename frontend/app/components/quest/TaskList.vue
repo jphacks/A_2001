@@ -23,52 +23,14 @@ import TaskListItem from '~/components/quest/TaskListItem';
 import SubtaskList from '~/components/quest/SubtaskList';
 
 export default {
-  data() {
-    return {
-      tasks: [],
-    };
-  },
   components: {
     TaskListItem,
     SubtaskList,
   },
-  methods: {
-    updateTask(task) {
-      console.log('TODO: タスク編集APIへ', task);
-    },
-    addNewTask(taskId) {
-      console.log(taskId);
-      const index = this.tasks.findIndex((task) => {
-        return task.id === taskId;
-      });
-
-      const newTask = {
-        id: '0100',
-        name: 'Untitled',
-        done: false,
-        subtasks: [],
-      };
-      this.tasks.splice(index + 1, 0, newTask);
-    },
-    addNewSubtask(taskId) {
-      const index = this.tasks.findIndex((task) => {
-        return task.id === taskId;
-      });
-
-      // TODO: サブタスク登録APIへ
-      const newSubtask = {
-        id: '0100',
-        name: 'Untitled',
-        done: false,
-      };
-      this.tasks[index].subtasks.push(newSubtask);
-    },
-    deleteTask(taskId) {
-      const index = this.tasks.findIndex((task) => {
-        return task.id === taskId;
-      });
-      this.tasks.splice(index, 1);
-    },
+  data() {
+    return {
+      tasks: [],
+    };
   },
   mounted() {
     // TODO: APIからGET
@@ -94,6 +56,11 @@ export default {
       { id: '0003', name: 'asljfalksdfj', done: false, subtasks: [] },
       { id: '0004', name: 'hpighlrkjlkwjeafs', done: false, subtasks: [] },
     ];
+  },
+  methods: {
+    updateTask(task) {
+      console.log('TODO: タスク編集APIへ', task);
+    },
   },
 };
 </script>
