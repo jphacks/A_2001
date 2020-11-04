@@ -12,14 +12,23 @@ logger = logging.getLogger("app")
 @jwt_required
 def get_quest(quest_id):
     user_id = get_jwt_identity()
-    quest = Quest.query.filter(Quest.user_id == user_id, Quest.id == quest_id).first()
-    quest_info = quest.to_dict()
+    try:
+        quest = Quest.query.filter(
+            Quest.user_id == user_id, Quest.id == quest_id
+        ).first()
+        if quest is None:
+            return jsonify({"message": "Quest is not found"}), 404
+        quest_info = quest.to_dict()
 
-    tasks_info = []
-    tasks = Task.query.filter(Task.quest_id == quest_id)
-    for task in tasks:
-        tasks_info.append(task.to_dict())
-    quest_info["tasks"] = tasks_info
+        tasks_info = []
+        tasks = Task.query.filter(Task.quest_id == quest_id)
+        for task in tasks:
+            tasks_info.append(task.to_dict())
+        quest_info["tasks"] = tasks_info
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"message": "Internal server error"}), 500
+
     return jsonify({"quest": quest_info}), 200
 
 
@@ -81,7 +90,7 @@ def delete_quest(quest_id):
             Quest.id == quest_id,
         ).first()
         if quest is None:
-            return jsonify({"message": "Quest not found"}), 404
+            return jsonify({"message": "Quest is not found"}), 404
 
         db.session.delete(quest)
         db.session.commit()
