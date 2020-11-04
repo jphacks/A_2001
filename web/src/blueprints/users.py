@@ -1,7 +1,7 @@
 import logging
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Quest, User
+from ..models import Quest, QuestExp, User
 from ..database import db
 
 users = Blueprint("users", __name__)
@@ -21,7 +21,16 @@ def user_exp():
         title = user_data.title
         quests = Quest.query.filter(Quest.user_id == user_id).all()
 
-        d = {que.id: {"exp": que.exp, "name": que.name} for que in quests}
+        quests_id = [que.id for que in quests]
+        quests_exp = QuestExp.query.filter(QuestExp.quest_id.in_(quests_id))
+        exp = {que_id: {} for que_id in quests_id}
+        for quest_exp in quests_exp:
+            exp[quest_exp.quest_id][str(quest_exp.date)] = quest_exp.exp
+
+        d = {
+            que.id: {"total_exp": que.exp, "exp": exp[que.id], "name": que.name}
+            for que in quests
+        }
 
     except Exception as e:
         logger.error(e)

@@ -2,7 +2,7 @@ import logging
 import datetime
 from flask import jsonify, Blueprint, request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from ..models import Quest, Task
+from ..models import Quest, QuestExp, Task
 from ..database import db
 
 tasks = Blueprint("tasks", __name__)
@@ -223,6 +223,14 @@ def measure_task(quest_id, task_id):
             task.quest.exp += diff
             task.start = None
 
+            quest_exp = QuestExp.query.filter(
+                QuestExp.quest_id == quest_id, QuestExp.date == now.date()
+            ).first()
+            if quest_exp is None:
+                quest_exp = QuestExp(quest_id, diff, now.date())
+                db.session.add(quest_exp)
+            else:
+                quest_exp.exp += diff
         db.session.commit()
     except Exception as e:
         logger.error(e)

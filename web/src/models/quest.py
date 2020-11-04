@@ -32,6 +32,7 @@ class Quest(db.Model):
         nullable=False,
     )
     quests_shared = db.relationship("QuestShared", backref="quest", cascade="all")
+    quests_exp = db.relationship("QuestExp", backref="quest", cascade="all")
     tasks = db.relationship("Task", backref="quest", cascade="all")
 
     def __init__(self, user_id, name, category, description=None):
