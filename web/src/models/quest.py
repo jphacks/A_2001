@@ -46,5 +46,5 @@ class Quest(db.Model):
             id=self.id,
             name=self.name,
             category=self.category,
-            description=self.description,
+            description="" if self.description is None else self.description,
         )
