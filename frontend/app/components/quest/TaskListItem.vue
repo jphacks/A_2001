@@ -20,7 +20,7 @@
       @keydown.prevent.up="movePrev"
       @keydown.delete="deleteTask"
     />
-    <!-- <i
+    <i
       v-show="!isSubtask && (this.task.start !== null || focused)"
       class="fa mr-2 icon"
       :class="
@@ -28,7 +28,7 @@
       "
       @click="toggleDoing"
     ></i>
-    <b-badge v-if="!isSubtask" variant="primary" pill>{{
+    <!-- <b-badge v-if="!isSubtask" variant="primary" pill>{{
       task.subtasks.length
     }}</b-badge> -->
     <i

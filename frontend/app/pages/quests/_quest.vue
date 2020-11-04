@@ -90,7 +90,7 @@ export default {
     deleteQuest() {
       this.$api
         .$delete(`/api/quests/${this.$route.params.quest}`)
-        .then((res) => {
+        .then(() => {
           this.$router.push('/');
         })
         .catch((err) => console.log(err));
