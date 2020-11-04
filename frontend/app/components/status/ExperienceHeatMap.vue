@@ -15,8 +15,6 @@ export default {
   },
   mounted() {
     // とりあえず今から40日分？
-    // const exps = Object.values(this.status.exps);
-    // const expList = exps.map(({ total_exp }) => total_exp);
     const datasets = [];
     const expsLength = Object.keys(this.status.exps).length;
     const expsEntries = Object.entries(this.status.exps);
