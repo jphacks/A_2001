@@ -15,52 +15,60 @@ export default {
   },
   mounted() {
     // とりあえず今から40日分？
-    const datasets = [];
-    const expsLength = Object.keys(this.status.exps).length;
-    const expsEntries = Object.entries(this.status.exps);
-    for (let index = 0; index < expsLength; index++) {
-      datasets.push({
+    const exps = Object.values(this.status.exps);
+    const datasets = exps.map((val, i) => {
+      const bgColor = this.generateColor(val.exp, i + 1, exps.length);
+      return {
         data: new Array(this.mapWidth).fill(1),
+        label: val.name,
         borderWidth: 0.2,
         borderColor: '#FFFFFF',
-        backgroundColor: this.generateColor(
-          expsEntries[index][1].exp,
-          index + 1,
-          expsLength
-        ),
-      });
-    }
+        backgroundColor: bgColor,
+        hoverBackgroundColor: bgColor,
+      };
+    });
     const labels = [];
-    for (let i = 1; i < this.mapWidth + 1; i++) {
-      labels.push(i);
+    for (let i = 0; i < this.mapWidth; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      date.setHours(0);
+      date.setMinutes(0);
+      date.setSeconds(0);
+      labels.unshift(this.getDateString(date));
     }
 
+    const minDisplayDate = new Date();
+    minDisplayDate.setDate(minDisplayDate.getDate() - this.mapWidth);
+    minDisplayDate.setHours(0);
+    minDisplayDate.setMinutes(0);
+    minDisplayDate.setSeconds(0);
+    const maxDisplayDate = new Date();
+    maxDisplayDate.setHours(23);
+    maxDisplayDate.setMinutes(59);
+    maxDisplayDate.setSeconds(59);
     this.renderChart(
       { labels, datasets },
       {
         responsive: true,
         maintainAspectRatio: false,
-        title: {
-          display: true,
-          text: 'Heat Map Sample',
-          fontSize: 18,
-        },
-        legend: {
-          display: false,
-        },
         scales: {
           xAxes: [
             {
+              type: 'time',
+              time: {
+                unit: 'day',
+                min: minDisplayDate,
+                max: maxDisplayDate,
+                displayFormats: {
+                  quarter: 'MMM D',
+                },
+              },
               gridLines: {
                 color: '#FFFFFF',
               },
               barPercentage: 0.99,
               categoryPercentage: 0.99,
               stacked: true,
-              ticks: {
-                min: 0,
-                display: false,
-              },
             },
           ],
           yAxes: [
@@ -78,28 +86,40 @@ export default {
             },
           ],
         },
+        tooltips: {
+          callbacks: {
+            label: (tooltipItem, data) => {
+              const exp = exps[tooltipItem.datasetIndex]['exp'];
+              const dateString = this.getDateString(
+                new Date(tooltipItem.xLabel)
+              );
+              return exp[dateString] ?? 0;
+            },
+          },
+        },
       }
     );
   },
   methods: {
     generateColor(exp, index, divNum) {
       const date = new Date();
+      date.setHours(0);
+      date.setMinutes(0);
+      date.setSeconds(0);
+
       const colors = [];
       const maxExp = Math.max(...Object.values(exp));
       for (let i = 0; i < this.mapWidth; i++) {
-        date.setDate(date.getDate() - 1);
         const dateString = this.getDateString(date);
-        let lightness = null;
+        const expVal = exp[dateString] ?? 0;
+        const value = expVal / maxExp;
+        const saturation = value * 100;
+        const lightness = -value * 67 + 97;
 
-        if (exp[dateString]) {
-          lightness = `${String(
-            Math.round((exp[dateString] / maxExp) * 100)
-          )}%`;
-        } else {
-          lightness = '0%';
-        }
-
-        colors.push(`hsl(${(360 * index) / divNum}, 75%, ${lightness})`);
+        colors.unshift(
+          `hsl(${(360 * index) / divNum}, ${saturation}%, ${lightness}%)`
+        );
+        date.setDate(date.getDate() - 1);
       }
 
       return colors;
