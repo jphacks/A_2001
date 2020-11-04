@@ -50,6 +50,7 @@ export default {
       focused: false,
       // timerId: null,
       // totalTime: 0,
+      deleted: false,
     };
   },
   // mounted() {
@@ -69,7 +70,8 @@ export default {
     //   this.totalTime++;
     // },
     updateTask() {
-      this.$emit('updateTask', this.task);
+      // 削除されたときにも@blurが発生するのでそのときは取り除く
+      if (!this.deleted) this.$emit('updateTask', this.task);
     },
     addNewTask(e) {
       if (e.keyCode !== 13) return; // 日本語入力確定を除外
@@ -93,9 +95,11 @@ export default {
       if (index - 1 >= 0) elements[index - 1].focus();
     },
     deleteTask() {
-      if (this.task.name.length === 0) {
+      // 長押ししたときに1度だけifの中に入る
+      if (this.task.name.length === 0 && !this.deleted) {
         // 0文字の状態でDELETEを押すと削除
         this.$emit('deleteTask', this.task.id);
+        this.deleted = true;
       }
     },
 

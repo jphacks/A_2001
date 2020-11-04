@@ -32,23 +32,40 @@ export default {
   },
   methods: {
     updateSubtask(subtask) {
-      console.log('TODO: サブタスク編集APIへ', subtask);
+      const quest = this.$route.params.quest;
+      this.$api.$patch(
+        `/api/quests/${quest}/tasks/${this.task.id}/subtasks/${subtask.id}`,
+        {
+          name: subtask.name,
+        }
+      );
     },
     // taskに新しいsubtaskを追加
     addNewSubtask() {
-      // TODO: サブタスク登録APIへ
-      const newSubtask = {
-        id: '0100',
-        name: 'Untitled',
-        done: false,
-      };
-      this.task.subtasks.push(newSubtask);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$post(`/api/quests/${quest}/tasks/${this.task.id}/subtasks`, {
+          name: 'Untitled',
+          description: '',
+        })
+        .then((res) => {
+          this.task.subtasks.push(res);
+        })
+        .catch((err) => console.log(err));
     },
     deleteSubtask(taskId) {
       const index = this.task.subtasks.findIndex((subtask) => {
         return subtask.id === taskId;
       });
-      this.task.subtasks.splice(index, 1);
+      const quest = this.$route.params.quest;
+      this.$api
+        .$delete(
+          `/api/quests/${quest}/tasks/${this.task.id}/subtasks/${taskId}`
+        )
+        .then(() => {
+          this.task.subtasks.splice(index, 1);
+        })
+        .catch((err) => console.log(err));
     },
   },
 };

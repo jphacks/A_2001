@@ -1,17 +1,19 @@
 <template>
   <div class="animated fadeIn">
-    <b-card-group columns class="card-columns cols-2">
-      <b-card header="経験値">
-        <div class="chart-wrapper">
-          <ExperienceRadarChart :status="status" />
-        </div>
-      </b-card>
-      <b-card header="経験値">
-        <div class="chart-wrapper">
-          <ExperiencePieChart :status="status" />
-        </div>
-      </b-card>
-    </b-card-group>
+    <template v-if="!$fetchState.pending">
+      <b-card-group columns class="card-columns cols-2">
+        <b-card header="経験値">
+          <div class="chart-wrapper">
+            <ExperienceRadarChart :status="status" />
+          </div>
+        </b-card>
+        <b-card header="経験値">
+          <div class="chart-wrapper">
+            <ExperiencePieChart :status="status" />
+          </div>
+        </b-card>
+      </b-card-group>
+    </template>
   </div>
 </template>
 
@@ -25,36 +27,17 @@ export default {
     ExperienceRadarChart,
     ExperiencePieChart,
   },
-  fetch() {
-    // TODO: APIから取ってくる
-    this.status = {
-      exps: {
-        2: {
-          name: 'Vue.js入門',
-          exp: 1412,
-        },
-        10: {
-          name: 'React入門',
-          exp: 2000,
-        },
-        41: {
-          name: '競プロ',
-          exp: 2412,
-        },
-        1010: {
-          name: '研究',
-          exp: 200,
-        },
-      },
-      level: 0,
-      title: 'Vueマスター',
-    };
+  fetchOnServer: false,
+  async fetch() {
+    const status = await this.$api.$get('/api/users').catch((err) => {
+      console.log(err);
+    });
+    this.status = status;
   },
   data() {
     return {
       status: {},
     };
   },
-  fetchOnServer: false,
 };
 </script>
