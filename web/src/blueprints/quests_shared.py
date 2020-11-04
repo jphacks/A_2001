@@ -52,6 +52,7 @@ def clone_quest(quest_id):
         db.session.commit()
     except Exception as e:
         logger.error(e)
+        db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
     try:
@@ -60,10 +61,12 @@ def clone_quest(quest_id):
         for task in tasks:
             new_task = Task(new_quest.id, task.name, task.description)
             db.session.add(new_task)
-            db.session.commit()
+            db.session.flush()
             task_id_map[task.id] = new_task.id
+        db.session.commit()
     except Exception as e:
         logger.error(e)
+        db.session.rollback()
         return jsonify({"message": "Internal server error"}), 500
 
     try:
@@ -73,7 +76,7 @@ def clone_quest(quest_id):
                 task_id_map[subtask.task_id], subtask.name, subtask.description
             )
             db.session.add(new_subtask)
-            db.session.commit()
+        db.session.commit()
     except Exception as e:
         logger.error(e)
         return jsonify({"message": "Internal server error"}), 500
