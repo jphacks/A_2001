@@ -53,28 +53,9 @@ export default {
     const res = await this.$api
       .$get('/api/quests')
       .catch((err) => console.log(err));
-    const items = [
-      {
-        title: true,
-        name: 'Quest',
-        class: '',
-        wrapper: {
-          element: '',
-          attributes: {},
-        },
-      },
-      { divider: true },
-      ...res.quests.map((e) => this.response2item(e)),
-      { button: true },
-    ];
-    this.navItems = items;
+    this.$store.commit('quest/setQuests', res.quests);
   },
   fetchOnServer: false,
-  data() {
-    return {
-      navItems: [],
-    };
-  },
   methods: {
     addQuest() {
       this.$api
@@ -84,24 +65,39 @@ export default {
           description: '',
         })
         .then((res) => {
-          this.navItems.splice(
-            this.navItems.length - 1,
-            0,
-            this.response2item(res)
-          );
+          this.$store.commit('quest/addQuest', { ...res, undone: 0 });
         })
         .catch((err) => console.log(err));
     },
-    response2item(response) {
+    quests2item(quests) {
       return {
-        id: response.id,
-        name: response.name,
-        url: '/quests/' + response.id,
+        id: quests.id,
+        name: quests.name,
+        url: '/quests/' + quests.id,
         badge: {
           variant: 'primary',
-          text: response.undone,
+          text: quests.undone,
         },
       };
+    },
+  },
+  computed: {
+    navItems() {
+      console.log(this.$store.state.quest.quests);
+      return [
+        {
+          title: true,
+          name: 'Quest',
+          class: '',
+          wrapper: {
+            element: '',
+            attributes: {},
+          },
+        },
+        { divider: true },
+        ...this.$store.state.quest.quests.map((e) => this.quests2item(e)),
+        { button: true },
+      ];
     },
   },
 };

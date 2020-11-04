@@ -84,13 +84,16 @@ export default {
         })
         .then((res) => {
           this.quest = res;
+          this.$store.commit('quest/setName', { id: res.id, name: res.name });
         })
         .catch((err) => console.log(err));
     },
     deleteQuest() {
+      const questId = parseInt(this.$route.params.quest);
       this.$api
-        .$delete(`/api/quests/${this.$route.params.quest}`)
+        .$delete(`/api/quests/${questId}`)
         .then(() => {
+          this.$store.commit('quest/deleteQuest', questId);
           this.$router.push('/');
         })
         .catch((err) => console.log(err));
