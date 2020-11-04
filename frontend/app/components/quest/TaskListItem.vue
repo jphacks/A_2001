@@ -21,9 +21,11 @@
       @keydown.delete="deleteTask"
     />
     <i
-      v-show="!isSubtask && (doing || focused)"
+      v-show="!isSubtask && (this.task.start !== null || focused)"
       class="fa mr-2 icon"
-      :class="doing ? 'fa-hourglass-start' : 'fa-hourglass-end'"
+      :class="
+        this.task.start !== null ? 'fa-hourglass-start' : 'fa-hourglass-end'
+      "
       @click="toggleDoing"
     ></i>
     <b-badge v-if="!isSubtask" variant="primary" pill>{{
@@ -46,7 +48,6 @@ export default {
   },
   data() {
     return {
-      doing: false,
       focused: false,
       // timerId: null,
       // totalTime: 0,
@@ -125,15 +126,15 @@ export default {
       }
     },
     toggleDoing() {
-      // TODO: doing情報をthis.taskに持たせるべきか考える
+      // TODO: this.task.start情報をthis.taskに持たせるべきか考える
       this.$api
         .$put(
           `/api/quests/${this.$route.params.quest}/tasks/${this.task.id}/time`
         )
         .then(() => {
-          // this.doing = !this.doing;
+          // this.this.task.start = !this.this.task.start;
           if (this.task.start === null) {
-            this.task.start = new Date().toString();
+            this.task.start = new Date().toUTCString();
           } else {
             this.task.start = null;
           }
