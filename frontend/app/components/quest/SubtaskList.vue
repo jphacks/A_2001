@@ -1,19 +1,20 @@
 <template>
-  <div :id="`subtask_${task.id}`">
-    <b-list-group-item
-      v-for="subtask in task.subtasks"
-      :key="subtask.id"
-      class="subtask"
-      button
-    >
-      <TaskListItem
-        :task="subtask"
-        :is-subtask="true"
-        @addNewSubtask="addNewSubtask"
-        @updateTask="updateSubtask"
-        @deleteTask="deleteSubtask"
-      />
-    </b-list-group-item>
+  <div :id="`subtask_${task.id}`" class="subtask-container">
+    <div>
+      <b-list-group-item
+        v-for="subtask in task.subtasks"
+        :key="subtask.id"
+        class="subtask"
+      >
+        <TaskListItem
+          :task="subtask"
+          :is-subtask="true"
+          @addNewSubtask="addNewSubtask"
+          @updateTask="updateSubtask"
+          @deleteTask="deleteSubtask"
+        />
+      </b-list-group-item>
+    </div>
   </div>
 </template>
 
@@ -78,5 +79,19 @@ export default {
 
 .subtask {
   text-indent: 1em;
+}
+
+.subtask-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.subtask-container > div {
+  width: 95%;
+}
+
+.subtask {
+  width: 100%;
 }
 </style>

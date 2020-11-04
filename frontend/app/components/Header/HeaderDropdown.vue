@@ -16,7 +16,6 @@
 <script>
 export default {
   name: 'HeaderDropdown',
-  data: () => {},
 
   methods: {
     logout() {
