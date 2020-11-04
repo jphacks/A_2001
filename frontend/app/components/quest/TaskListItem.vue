@@ -20,7 +20,7 @@
       @keydown.prevent.up="movePrev"
       @keydown.delete="deleteTask"
     />
-    <i
+    <!-- <i
       v-show="!isSubtask && (this.task.start !== null || focused)"
       class="fa mr-2 icon"
       :class="
@@ -30,7 +30,13 @@
     ></i>
     <b-badge v-if="!isSubtask" variant="primary" pill>{{
       task.subtasks.length
-    }}</b-badge>
+    }}</b-badge> -->
+    <i
+      v-if="!isSubtask"
+      class="fa fa-plus-square-o ml-2 fa-lg icon"
+      @click="addNewTask"
+    />
+    <i class="fa fa-minus-square-o ml-2 fa-lg icon" @click="deleteTask" />
   </div>
 </template>
 
@@ -75,6 +81,13 @@ export default {
       if (!this.deleted) this.$emit('updateTask', this.task);
     },
     addNewTask(e) {
+      // ボタンで追加するとき
+      if (e.target.tagName === 'I') {
+        this.$emit('addNewSubtask', this.task.id);
+        return;
+      }
+
+      // キーボードで追加するとき
       if (e.keyCode !== 13) return; // 日本語入力確定を除外
 
       if (this.isSubtask) {
@@ -95,7 +108,13 @@ export default {
       const index = [].findIndex.call(elements, (e) => e === event.target);
       if (index - 1 >= 0) elements[index - 1].focus();
     },
-    deleteTask() {
+    deleteTask(e) {
+      // ボタンで削除するとき
+      if (e.target.tagName === 'I') {
+        this.$emit('deleteTask', this.task.id);
+        return;
+      }
+
       // 長押ししたときに1度だけifの中に入る
       if (this.task.name.length === 0 && !this.deleted) {
         // 0文字の状態でDELETEを押すと削除

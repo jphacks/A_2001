@@ -12,7 +12,7 @@
               {{ quest.name }}</b-col
             >
             <b-col cols="auto" class="p-3 text-danger">
-              <i class="fa fa-lg fa-trash-o" @click="deleteQuest" />
+              <i class="fa fa-sm fa-trash-o" @click="deleteQuest" />
             </b-col>
           </b-row>
         </b-container>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <b-list-group>
-      <div v-for="task in tasks" :key="task.id">
-        <b-list-group-item>
+      <div v-for="task in tasks" :key="task.id" class="mb-1">
+        <b-list-group-item class="flex-end">
           <TaskListItem
             :is-subtask="false"
             :task="task"
