@@ -14,6 +14,7 @@
         </b-list-group-item>
         <SubtaskList :task="task" />
       </div>
+      <b-button @click="addNewTask" variant="primary">+</b-button>
     </b-list-group>
   </div>
 </template>
