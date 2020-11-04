@@ -83,7 +83,6 @@ export default {
   },
   computed: {
     navItems() {
-      console.log(this.$store.state.quest.quests);
       return [
         {
           title: true,
