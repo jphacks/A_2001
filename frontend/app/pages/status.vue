@@ -13,6 +13,11 @@
           </div>
         </b-card>
       </b-card-group>
+      <b-card header="経験値">
+        <div class="chart-wrapper">
+          <ExperienceHeatMap :status="status" />
+        </div>
+      </b-card>
     </template>
   </div>
 </template>
@@ -20,12 +25,14 @@
 <script>
 import ExperienceRadarChart from '~/components/status/ExperienceRadarChart';
 import ExperiencePieChart from '~/components/status/ExperiencePieChart';
+import ExperienceHeatMap from '~/components/status/ExperienceHeatMap';
 
 export default {
   name: 'Charts',
   components: {
     ExperienceRadarChart,
     ExperiencePieChart,
+    ExperienceHeatMap,
   },
   fetchOnServer: false,
   async fetch() {
