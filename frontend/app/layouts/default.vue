@@ -4,8 +4,7 @@
     <div class="app-body">
       <Sidebar />
       <main class="main">
-        <breadcrumb :list="list" />
-        <div class="container-fluid">
+        <div class="container-fluid mt-4">
           <nuxt />
         </div>
       </main>
@@ -19,7 +18,6 @@ import {
   Header as AppHeader,
   Sidebar,
   Footer as AppFooter,
-  Breadcrumb,
 } from '~/components/';
 
 export default {
@@ -28,7 +26,6 @@ export default {
     AppHeader,
     Sidebar,
     AppFooter,
-    Breadcrumb,
   },
   data() {
     return {

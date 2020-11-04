@@ -7,7 +7,6 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <b-link class="navbar-brand" to="#"></b-link>
     <button
       class="navbar-toggler sidebar-toggler d-md-down-none"
       type="button"
