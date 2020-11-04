@@ -14,6 +14,11 @@
           <template v-else-if="item.divider">
             <SidebarNavDivider :key="item.key" :classes="item.class" />
           </template>
+          <template v-else-if="item.button">
+            <SidebarNavItem :key="item.key" :classes="item.class">
+              <b-button block variant="primary" @click="addQuest">+</b-button>
+            </SidebarNavItem>
+          </template>
           <template v-else>
             <SidebarNavItem :key="item.key" :classes="item.class">
               <SidebarNavLink
@@ -59,15 +64,8 @@ export default {
         },
       },
       { divider: true },
-      ...res.quests.map((e) => ({
-        id: e.id,
-        name: e.name,
-        url: '/quests/' + e.id,
-        badge: {
-          variant: 'primary',
-          text: e.undone,
-        },
-      })),
+      ...res.quests.map((e) => this.response2item(e)),
+      { button: true },
     ];
     this.navItems = items;
   },
@@ -76,6 +74,35 @@ export default {
     return {
       navItems: [],
     };
+  },
+  methods: {
+    addQuest() {
+      this.$api
+        .$post(`/api/quests`, {
+          name: 'Untitled',
+          category: '',
+          description: '',
+        })
+        .then((res) => {
+          this.navItems.splice(
+            this.navItems.length - 1,
+            0,
+            this.response2item(res)
+          );
+        })
+        .catch((err) => console.log(err));
+    },
+    response2item(response) {
+      return {
+        id: response.id,
+        name: response.name,
+        url: '/quests/' + response.id,
+        badge: {
+          variant: 'primary',
+          text: response.undone,
+        },
+      };
+    },
   },
 };
 </script>
