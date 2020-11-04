@@ -88,12 +88,12 @@ export default {
         },
         tooltips: {
           callbacks: {
-            label: (tooltipItem, data) => {
-              const exp = exps[tooltipItem.datasetIndex]['exp'];
+            label: (tooltipItem) => {
+              const exp = exps[tooltipItem.datasetIndex].exp;
               const dateString = this.getDateString(
                 new Date(tooltipItem.xLabel)
               );
-              return exp[dateString] ?? 0;
+              return (exp[dateString] ?? 0) + 'min';
             },
           },
         },
