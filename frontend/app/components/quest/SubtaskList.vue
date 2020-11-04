@@ -21,14 +21,14 @@
 import TaskListItem from '~/components/quest/TaskListItem';
 
 export default {
+  components: {
+    TaskListItem,
+  },
   props: {
     task: {
       type: Object,
       required: true,
     },
-  },
-  components: {
-    TaskListItem,
   },
   methods: {
     updateSubtask(subtask) {
