@@ -1,4 +1,4 @@
-# SHIBAFU ~Status Heatmap and Illustration Browser 〇〇 Application For User's motivation~
+# SHIBAFU -Status Heatmap and Illustration Browser 〇〇 Application For User's motivation-
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
@@ -6,7 +6,7 @@
 
 ### モチベーション管理 X Tech
 
-「SHIBAFU ~Status Heatmap and Illustration Browser 〇〇 Application For User's motivation~」は経験値システムやヒートマップを導入したタスク管理アプリです．設定したタスクをこなすことで経験値がたまり，ゲーム的な体験とともにモチベーションアップにつなげるアプリです．
+「SHIBAFU -Status Heatmap and Illustration Browser 〇〇 Application For User's motivation-」は経験値システムやヒートマップを導入したタスク管理アプリです．設定したタスクをこなすことで経験値がたまり，ゲーム的な体験とともにモチベーションアップにつなげるアプリです．
 
 ### 背景(製品開発のきっかけ、課題等）
 
