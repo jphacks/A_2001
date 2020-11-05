@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 export default {
   props: {
     provider: {
@@ -30,12 +31,10 @@ export default {
         .signInWithPopup(p)
         .then((result) => {
           const user = result.user;
-          // console.log('success : ' + user.uid + ' : ' + user.displayName);
-
           user.getIdToken().then((idToken) => {
             const params = { token: idToken };
             this.$axios
-              .get('http://localhost:10000/api/auth', { params })
+              .get('/api/auth', { params })
               .then((res) => {
                 const accessToken = res.data.access_token;
                 const refreshToken = res.data.refresh_token;
