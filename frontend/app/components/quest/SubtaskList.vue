@@ -9,6 +9,7 @@
         <TaskListItem
           :task="subtask"
           :is-subtask="true"
+          :parent-task-id="task.id"
           @addNewSubtask="addNewSubtask"
           @updateTask="updateSubtask"
           @deleteTask="deleteSubtask"
