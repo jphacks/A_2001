@@ -1,4 +1,4 @@
-# SHIBAFU ~Status Heatmap and Illustration Browser 〇〇 Application For User's motivation~
+# SHIBAFU -Status Heatmap and Illustration Browser 〇〇 Application For User's motivation-
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
 
@@ -6,13 +6,13 @@
 
 ### モチベーション管理 X Tech
 
-「SHIBAFU ~Status Heatmap and Illustration Browser 〇〇 Application For User's motivation~」は経験値システムやヒートマップを導入した ToDo アプリです．設定した ToDo をこなすことで経験値がたまり，ゲーム的な体験とともにモチベーションアップにつなげるアプリです．
+「SHIBAFU -Status Heatmap and Illustration Browser 〇〇 Application For User's motivation-」は経験値システムやヒートマップを導入した ToDo アプリです．設定した ToDo をこなすことで経験値がたまり，ゲーム的な体験とともにモチベーションアップにつなげるアプリです．
 
 ### 背景(製品開発のきっかけ、課題等）
 
 「自分のスキルアップのために設定した ToDo だけどやる気が出ない．」「やらなきゃいけない課題だけど後回しにしようかな．」など習得を目指して取り組んでいることが作業になってしまったり，やりたくない課題など，モチベーションが上がらない ToDo が発生することがあります．
 
-この様な状況を打破するために，ToDo や課題をこなすことで経験値が貯まるウェブアプリを作りました．ToDO，課題をこなし経験値が貯まることで，達成感が生じ，より経験値を貯めようというゲーム的な体験からのモチベーションアップにつなげられます．
+この様な状況を打破するために，ToDo や課題をこなすことで経験値が貯まるウェブアプリを作りました．ToDo，課題をこなし経験値が貯まることで，達成感が生じ，より経験値を貯めようというゲーム的な体験からのモチベーションアップにつなげられます．
 
 ### 製品説明（具体的な製品の説明）
 
