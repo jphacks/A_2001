@@ -4,7 +4,7 @@
     <div class="app-body">
       <Sidebar />
       <main class="main">
-        <div class="container-fluid mt-4">
+        <div class="container-fluid mt-4 px-md-3 px-0">
           <nuxt />
         </div>
       </main>

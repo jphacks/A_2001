@@ -1,38 +1,31 @@
 <template>
-  <div>
-    <b-jumbotron>
-      <template #header>
-        <b-container
-          fluid
-          class="text-left display-3 text-bold"
-          v-if="!isNameTyping"
-        >
-          <b-row>
-            <b-col class="mr-auto p-3" @click="toggleQuestName">
-              {{ quest.name }}</b-col
-            >
-            <b-col cols="auto" class="p-3 text-danger">
-              <i class="fa fa-sm fa-trash-o" @click="deleteQuest" />
-            </b-col>
-          </b-row>
-        </b-container>
-        <div v-else class="quest-name">
-          <input
-            v-model="tmpName"
-            id="quest-name"
-            class="quest-name"
-            placeholder="クエスト名を入力"
-            @blur="updateQuestName"
-            @keydown.enter="updateQuestName"
-          />
-        </div>
-      </template>
-
-      <template #lead>
-        {{ quest.description }}
-      </template>
+  <div class="card">
+    <h3 class="card-header">
+      <b-container v-if="!isNameTyping" fluid class="text-left text-bold">
+        <b-row>
+          <b-col class="mr-auto p-3" @click="toggleQuestName">
+            {{ quest.name }}</b-col
+          >
+          <b-col cols="auto" class="p-3 text-danger">
+            <i class="fa fa-sm fa-trash-o" @click="deleteQuest" />
+          </b-col>
+        </b-row>
+      </b-container>
+      <div v-else class="quest-name">
+        <input
+          id="quest-name"
+          v-model="tmpName"
+          class="quest-name"
+          placeholder="クエスト名を入力"
+          @blur="updateQuestName"
+          @keydown.enter="updateQuestName"
+        />
+      </div>
+    </h3>
+    <div class="card-body">
+      <h5 class="card-title">{{ quest.description }}</h5>
       <TaskList :tasks="tasks" />
-    </b-jumbotron>
+    </div>
   </div>
 </template>
 
