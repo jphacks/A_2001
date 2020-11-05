@@ -62,6 +62,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    parentTaskId: {
+      type: Number,
+      default: null,
+    },
   },
   data() {
     return {
@@ -77,7 +81,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.task);
     this.$nextTick(() => {
       this.$refs[`task${this.task.id}`].focus();
     });
@@ -145,9 +148,13 @@ export default {
 
     toggleDone() {
       const questId = parseInt(this.$route.params.quest);
+      const url = this.isSubtask
+        ? `/api/quests/${questId}/tasks/${this.parentTaskId}/subtasks/${this.task.id}/done`
+        : `/api/quests/${questId}/tasks/${this.task.id}/done`;
+
       if (this.task.done === true) {
         this.$api
-          .$delete(`/api/quests/${questId}/tasks/${this.task.id}/done`)
+          .$delete(url)
           .then(() => {
             if (!this.isSubtask)
               this.$store.commit('quest/decrementUndoneCnt', questId);
@@ -156,7 +163,7 @@ export default {
           .catch(() => alert('done error'));
       } else {
         this.$api
-          .$put(`/api/quests/${questId}/tasks/${this.task.id}/done`)
+          .$put(url)
           .then(() => {
             if (!this.isSubtask)
               this.$store.commit('quest/incrementUndoneCnt', questId);
