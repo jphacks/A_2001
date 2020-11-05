@@ -19,7 +19,7 @@ export default {
       localStorage.setItem('refreshToken', null);
       localStorage.setItem('accessToken', null);
       this.$store.commit('login/storeLogout');
-      alert('logged out');
+      this.$router.replace('/');
     },
   },
 };

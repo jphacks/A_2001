@@ -11,6 +11,7 @@ export default {
   data: () => {
     return {
       mapWidth: 40,
+      maxMinutes: 1440,
     };
   },
   mounted() {
@@ -86,6 +87,12 @@ export default {
             },
           ],
         },
+        legend: {
+          display: true,
+          labels: {
+            fontColor: 'rgb(255, 99, 132)',
+          },
+        },
         tooltips: {
           callbacks: {
             label: (tooltipItem) => {
@@ -112,7 +119,7 @@ export default {
       for (let i = 0; i < this.mapWidth; i++) {
         const dateString = this.getDateString(date);
         const expVal = exp[dateString] ?? 0;
-        const value = expVal / maxExp;
+        const value = Math.min(1, expVal / this.maxMinutes);
         const saturation = value * 100;
         const lightness = -value * 67 + 97;
 
