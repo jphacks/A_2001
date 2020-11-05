@@ -7,7 +7,7 @@ export default {
   mounted() {
     const exps = Object.values(this.status.exps);
     const labels = exps.map(({ name }) => name);
-    const expList = exps.map(({ exp }) => exp);
+    const expList = exps.map(({ total_exp: totalExp }) => totalExp);
     const datasets = [
       {
         label: '経験値',
