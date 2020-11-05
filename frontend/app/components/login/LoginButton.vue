@@ -41,6 +41,10 @@ export default {
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
                 this.$store.commit('login/storeLogin');
+                this.$store.commit(
+                  'login/storeIcon',
+                  firebase.auth().currentUser.photoURL
+                );
                 // access tokenとrefresh tokenだけ保持していればいいのでfirebaseからはすぐログアウト
                 firebase
                   .auth()
