@@ -56,6 +56,24 @@ export default {
     this.$store.commit('quest/setQuests', res.quests);
   },
   fetchOnServer: false,
+  computed: {
+    navItems() {
+      return [
+        {
+          title: true,
+          name: 'Quest',
+          class: '',
+          wrapper: {
+            element: '',
+            attributes: {},
+          },
+        },
+        { divider: true },
+        ...this.$store.state.quest.quests.map((e) => this.quests2item(e)),
+        { button: true },
+      ];
+    },
+  },
   methods: {
     addQuest() {
       this.$api
@@ -79,24 +97,6 @@ export default {
           text: quests.undone,
         },
       };
-    },
-  },
-  computed: {
-    navItems() {
-      return [
-        {
-          title: true,
-          name: 'Quest',
-          class: '',
-          wrapper: {
-            element: '',
-            attributes: {},
-          },
-        },
-        { divider: true },
-        ...this.$store.state.quest.quests.map((e) => this.quests2item(e)),
-        { button: true },
-      ];
     },
   },
 };

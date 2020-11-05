@@ -21,7 +21,10 @@
     </b-navbar-nav>
 
     <b-navbar-nav class="ml-auto">
-      <HeaderDropdown />
+      <HeaderDropdown v-if="$store.state.login.isLoggedin" />
+      <nuxt-link v-else class="btn btn-primary mr-5" to="/login"
+        >login</nuxt-link
+      >
     </b-navbar-nav>
   </header>
 </template>

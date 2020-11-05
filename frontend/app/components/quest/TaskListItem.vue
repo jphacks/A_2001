@@ -22,22 +22,32 @@
       @keydown.delete="deleteTask"
     />
     <i
-      v-show="!isSubtask && (this.task.start !== null || focused)"
+      v-show="!isSubtask && (task.start !== null || focused)"
       class="fa mr-2 icon"
-      :class="
-        this.task.start !== null ? 'fa-hourglass-start' : 'fa-hourglass-end'
-      "
+      :class="task.start !== null ? 'fa-hourglass-start' : 'fa-hourglass-end'"
       @click="toggleDoing"
     ></i>
-    <!-- <b-badge v-if="!isSubtask" variant="primary" pill>{{
-      task.subtasks.length
-    }}</b-badge> -->
+    <!-- <b-form-group>
+      <b-form-radio-group
+        id="btn-radios-2"
+        v-model="selected"
+        :options="options"
+        buttons
+        button-variant="outline-primary"
+        size="sm"
+        name="radio-btn-outline"
+      ></b-form-radio-group>
+    </b-form-group> -->
+
     <i
       v-if="!isSubtask"
-      class="fa fa-plus-square-o ml-2 fa-lg icon"
+      class="fa fa-plus-square-o ml-2 fa-lg icon text-muted"
       @click="addNewTask"
     />
-    <i class="fa fa-minus-square-o ml-2 fa-lg icon" @click="deleteTask" />
+    <i
+      class="fa fa-minus-square-o ml-2 fa-lg icon text-muted"
+      @click="deleteTask"
+    />
   </div>
 </template>
 
@@ -59,9 +69,15 @@ export default {
       // timerId: null,
       // totalTime: 0,
       deleted: false,
+      selected: 'stop',
+      options: [
+        { text: 'stop', value: 'stop' },
+        { text: 'start', value: 'start' },
+      ],
     };
   },
   mounted() {
+    console.log(this.task);
     this.$nextTick(() => {
       this.$refs[`task${this.task.id}`].focus();
     });

@@ -2,7 +2,7 @@
   <div>
     <b-list-group>
       <div v-for="task in tasks" :key="task.id" class="mb-1">
-        <b-list-group-item class="flex-end">
+        <b-list-group-item class="task flex-end">
           <TaskListItem
             :is-subtask="false"
             :task="task"
@@ -14,7 +14,7 @@
         </b-list-group-item>
         <SubtaskList :task="task" />
       </div>
-      <b-button @click="addNewTask" variant="primary">+</b-button>
+      <b-button variant="primary" @click="addNewTask">+</b-button>
     </b-list-group>
   </div>
 </template>
@@ -96,3 +96,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.task {
+  border: none;
+  border-top: solid 1px gray;
+}
+</style>

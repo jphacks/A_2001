@@ -79,6 +79,8 @@ export default {
 
 .subtask {
   text-indent: 1em;
+  border: none;
+  border-top: solid 1px gray;
 }
 
 .subtask-container {
