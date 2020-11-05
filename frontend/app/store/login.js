@@ -1,5 +1,6 @@
 export const state = () => ({
   isLoggedin: false,
+  iconUrl: null,
 });
 
 export const mutations = {
@@ -8,6 +9,10 @@ export const mutations = {
   },
   storeLogout(state) {
     state.isLoggedin = false;
+  },
+  storeIcon(state, iconUrl) {
+    state.iconUrl = iconUrl;
+    console.log(state.iconUrl);
   },
 };
 

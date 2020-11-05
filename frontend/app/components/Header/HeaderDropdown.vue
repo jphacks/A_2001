@@ -1,10 +1,10 @@
 <template>
   <b-nav-item-dropdown right no-caret>
     <template slot="button-content">
-      <img src="~static/img/avatars/6.jpg" class="img-avatar" />
+      <img :src="$store.state.login.iconUrl" class="img-avatar" />
     </template>
 
-    <b-dropdown-item v-if="$store.state.login.isLoggedin" @click="logout"
+    <b-dropdown-item @click="logout"
       ><i class="fa fa-lock"></i> Logout</b-dropdown-item
     >
   </b-nav-item-dropdown>
