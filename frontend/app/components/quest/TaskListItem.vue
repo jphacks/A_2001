@@ -10,6 +10,7 @@
       @click="toggleDone"
     />
     <input
+      :ref="`task${task.id}`"
       v-model="task.name"
       class="focusable"
       :class="isSubtask ? 'subtask-name' : 'task-name'"
@@ -60,7 +61,11 @@ export default {
       deleted: false,
     };
   },
-  // mounted() {
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs[`task${this.task.id}`].focus();
+    });
+  },
   //   if (this.task.start !== null) {
   //     this.totalTime = Math.round(
   //       (new Date().getTime() - new Date(this.task.start + '+0900').getTime()) /
@@ -68,7 +73,6 @@ export default {
   //     );
   //     this.timerId = setInterval(() => this.updateTime(), 1000);
   //   }
-  // },
   // beforeDestroy() {
   //   clearInterval(this.timerId);
   // },
