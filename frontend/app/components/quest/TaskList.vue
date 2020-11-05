@@ -36,24 +36,30 @@ export default {
   },
   methods: {
     updateTask(task) {
-      const quest = this.$route.params.quest;
-      this.$api.$patch(`/api/quests/${quest}/tasks/${task.id}`, {
-        name: task.name,
-      });
+      const questId = this.$route.params.quest;
+      this.$api
+        .$patch(`/api/quests/${questId}/tasks/${task.id}`, {
+          name: task.name,
+        })
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
     },
     // addNewTask(taskId) {
     // const index = this.tasks.findIndex((task) => {
     //   return task.id === taskId;
     // });
     addNewTask() {
-      const quest = this.$route.params.quest;
+      const questId = parseInt(this.$route.params.quest);
       this.$api
-        .$post(`/api/quests/${quest}/tasks`, {
+        .$post(`/api/quests/${questId}/tasks`, {
           name: 'Untitled',
           description: '',
         })
         .then((res) => {
           this.tasks.push(res);
+          this.$store.commit('quest/incrementUndoneCnt', questId);
           // サーバー側で順序は保存していないので途中挿入はしないことにする
           // this.tasks.splice(index + 1, 0, res);
         })
@@ -63,9 +69,9 @@ export default {
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
-      const quest = this.$route.params.quest;
+      const questId = this.$route.params.quest;
       this.$api
-        .$post(`/api/quests/${quest}/tasks/${taskId}/subtasks`, {
+        .$post(`/api/quests/${questId}/tasks/${taskId}/subtasks`, {
           name: 'Untitled',
           description: '',
         })
@@ -78,11 +84,12 @@ export default {
       const index = this.tasks.findIndex((task) => {
         return task.id === taskId;
       });
-      const quest = this.$route.params.quest;
+      const questId = parseInt(this.$route.params.quest);
       this.$api
-        .$delete(`/api/quests/${quest}/tasks/${taskId}`)
+        .$delete(`/api/quests/${questId}/tasks/${taskId}`)
         .then(() => {
           this.tasks.splice(index, 1);
+          this.$store.commit('quest/decrementUndoneCnt', questId);
         })
         .catch((err) => console.log(err));
     },

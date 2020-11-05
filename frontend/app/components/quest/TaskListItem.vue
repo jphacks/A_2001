@@ -124,21 +124,22 @@ export default {
     },
 
     toggleDone() {
+      const questId = parseInt(this.$route.params.quest);
       if (this.task.done === true) {
         this.$api
-          .$delete(
-            `/api/quests/${this.$route.params.quest}/tasks/${this.task.id}/done`
-          )
+          .$delete(`/api/quests/${questId}/tasks/${this.task.id}/done`)
           .then(() => {
+            if (!this.isSubtask)
+              this.$store.commit('quest/decrementUndoneCnt', questId);
             this.task.done = false;
           })
           .catch(() => alert('done error'));
       } else {
         this.$api
-          .$put(
-            `/api/quests/${this.$route.params.quest}/tasks/${this.task.id}/done`
-          )
+          .$put(`/api/quests/${questId}/tasks/${this.task.id}/done`)
           .then(() => {
+            if (!this.isSubtask)
+              this.$store.commit('quest/incrementUndoneCnt', questId);
             this.task.done = true;
           })
           .catch(() => alert('done error'));
