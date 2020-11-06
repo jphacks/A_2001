@@ -12,7 +12,7 @@
           <span class="text-light">S</span>tatus
           <span class="text-light">H</span>eatmap and
           <span class="text-light">I</span>llustration of
-          <span class="text-light">B</span>
+          <span class="text-light">B</span>lah blah
           <span class="text-light">A</span>ctivities
           <span class="text-light">F</span>or
           <span class="text-light">U</span>ser's motivation
