@@ -1,40 +1,90 @@
 <template>
   <div class="card">
-    <h3 class="card-header">
-      <b-container v-if="!isNameTyping" fluid class="text-left text-bold">
-        <b-row>
-          <b-col class="mr-auto p-3" @click="toggleQuestName">
-            {{ quest.name }}</b-col
-          >
-          <b-col cols="auto" class="p-3 text-danger">
-            <i class="fa fa-sm fa-trash-o" @click="deleteQuest" />
-          </b-col>
-        </b-row>
-      </b-container>
-      <div v-else class="quest-name">
-        <input
-          id="quest-name"
-          v-model="tmpName"
-          class="quest-name"
-          placeholder="クエスト名を入力"
-          @blur="updateQuestName"
-          @keydown.enter="updateQuestName"
-        />
+    <div class="card-header">
+      <h3>
+        <b-container v-if="!isNameTyping" fluid class="text-left text-bold">
+          <b-row>
+            <b-col class="mr-auto p-3" @click="toggleQuestName">
+              {{ quest.name }}</b-col
+            >
+            <b-col cols="auto" class="p-3 text-danger">
+              <i
+                class="fa fa-sm fa-trash-o icon-button"
+                v-b-modal.modal-quest-delete
+              />
+            </b-col>
+            <b-modal id="modal-quest-delete" @ok="deleteQuest">
+              <p>クエストを削除しますか？</p>
+            </b-modal>
+          </b-row>
+        </b-container>
+        <div v-else class="quest-name">
+          <input
+            id="quest-name"
+            v-model="tmpName"
+            class="quest-name"
+            placeholder="クエスト名を入力"
+            @blur="updateQuestName"
+            @keydown.enter="updateQuestName"
+          />
+        </div>
+      </h3>
+
+      <div class="d-flex align-items-cente ml-3">
+        <p class="d-inline-block mb-1">{{ doneCnt }}個実行済み</p>
+        <b-button
+          v-if="!displayDoneTask"
+          variant="link"
+          size="sm"
+          @click="displayDoneTask = !displayDoneTask"
+          >表示</b-button
+        >
+        <b-button
+          v-else
+          variant="link"
+          size="sm"
+          @click="displayDoneTask = !displayDoneTask"
+          >非表示</b-button
+        >
       </div>
-    </h3>
+    </div>
+    <!-- <h5 class="card-title">{{ quest.description }}</h5> -->
+
     <div class="card-body">
-      <h5 class="card-title">{{ quest.description }}</h5>
-      <TaskList :tasks="tasks" />
+      <template v-for="task in tasks">
+        <DoingTask
+          v-if="task.start !== null"
+          :key="task.id"
+          :task="task"
+          class="mb-5"
+        />
+      </template>
+
+      <div class="card my-5">
+        <div class="card-header">未実行</div>
+        <div class="card-body">
+          <TaskList :tasks="tasks" />
+        </div>
+      </div>
+
+      <div v-if="displayDoneTask" class="card my-5">
+        <div class="card-header">実行済</div>
+        <div class="card-body">
+          <TaskList :tasks="tasks" :display-done-task="displayDoneTask" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import TaskList from '~/components/quest/TaskList';
+import DoingTask from '~/components/quest/DoingTask';
 
 export default {
   component: {
     TaskList,
+    DoingTask,
   },
   data() {
     return {
@@ -45,7 +95,19 @@ export default {
       tasks: [],
       isNameTyping: false,
       tmpName: '',
+      displayDoneTask: false,
     };
+  },
+  computed: {
+    doneCnt() {
+      let cnt = 0;
+      for (const task of this.tasks) {
+        if (task.done) {
+          cnt++;
+        }
+      }
+      return cnt;
+    },
   },
   mounted() {
     this.$api
@@ -55,6 +117,7 @@ export default {
         this.quest = quest;
         this.tasks = quest.tasks;
         this.tmpName = quest.name;
+        // 実行中のタスクがある場合はisDoingをtrueにする
       })
       .catch((err) => console.log(err));
   },
@@ -95,7 +158,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.icon-button::before {
+  cursor: pointer;
+}
+
 .quest-name {
   width: 100%;
   border: none;

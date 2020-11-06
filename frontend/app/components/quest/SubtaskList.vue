@@ -7,6 +7,7 @@
         class="subtask"
       >
         <TaskListItem
+          v-if="displayDoneTask || !task.done"
           :task="subtask"
           :is-subtask="true"
           :parent-task-id="task.id"
@@ -30,6 +31,10 @@ export default {
     task: {
       type: Object,
       required: true,
+    },
+    displayDoneTask: {
+      type: Boolean,
+      default: false,
     },
   },
   methods: {
