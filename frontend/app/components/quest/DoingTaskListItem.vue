@@ -42,7 +42,6 @@ export default {
       options: [{ text: 'checked', value: 'checked' }],
     };
   },
-
   methods: {
     // boolean
     toggleDone(done) {
@@ -74,21 +73,6 @@ export default {
       if (!this.isSubtask) {
         this.$emit('doneTask', done);
       }
-    },
-    done() {
-      const questId = parseInt(this.$route.params.quest);
-      const url = this.isSubtask
-        ? `/api/quests/${questId}/tasks/${this.parentTaskId}/subtasks/${this.task.id}/done`
-        : `/api/quests/${questId}/tasks/${this.task.id}/done`;
-      this.$api
-        .$put(url)
-        .then(() => {
-          if (!this.isSubtask) {
-            this.$store.commit('quest/incrementUndoneCnt', questId);
-          }
-          this.task.done = false;
-        })
-        .catch(() => alert('done error'));
     },
     toggleDoing() {
       // TODO: this.task.start情報をthis.taskに持たせるべきか考える
