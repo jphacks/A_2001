@@ -16,7 +16,9 @@
           </template>
           <template v-else-if="item.button">
             <SidebarNavItem :key="item.key" :classes="item.class">
-              <b-button block variant="primary" @click="addQuest">+</b-button>
+              <b-button block variant="primary" @click="addQuest">
+                <i class="fa fa-plus"></i>
+              </b-button>
             </SidebarNavItem>
           </template>
           <template v-else>

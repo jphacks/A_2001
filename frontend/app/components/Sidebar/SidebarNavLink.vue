@@ -10,10 +10,12 @@
     </a>
   </div>
   <div v-else>
-    <router-link :to="url" :class="classList">
-      <i :class="icon"></i> {{ name }}
+    <router-link :to="url" :class="classList" class="d-flex align-items-center">
+      <i :class="icon"></i>
+      <span class="text-truncate" style="width: 100px">{{ name }}</span>
       <b-badge
         v-if="badge && (badge.text || badge.text === 0)"
+        class="ml-auto text-center"
         :variant="badge.variant"
         >{{ badge.text }}</b-badge
       >
