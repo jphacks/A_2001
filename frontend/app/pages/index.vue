@@ -1,13 +1,11 @@
 <template>
   <div class="jumbotron-container">
-    <b-jumbotron fluid class="bg">
-      <template #header>
+    <div fluid class="jumbotron jumbotron-fluid bg">
+      <div class="container">
         <h1 class="text-white display-1 text-nowrap text-monospace">
           SHIBAFU
           <i class="fa fa-check"></i>
         </h1>
-      </template>
-      <template #lead>
         <p class="h2 text-secondary text-block">
           <span class="text-light">S</span>tatus
           <span class="text-light">H</span>eatmap and
@@ -17,18 +15,18 @@
           <span class="text-light">F</span>or
           <span class="text-light">U</span>ser's motivation
         </p>
-      </template>
-      <b-button pill variant="primary" @click="transition"
-        >{{ message }}
-        <b-icon
-          animation="cylon"
-          icon="chevron-right"
-          shift-h="4"
-          variant="white"
-          ><b-icon-chevron-right
-        /></b-icon>
-      </b-button>
-    </b-jumbotron>
+        <b-button pill variant="primary" @click="transition"
+          >{{ message }}
+          <b-icon
+            animation="cylon"
+            icon="chevron-right"
+            shift-h="4"
+            variant="white"
+            ><b-icon-chevron-right
+          /></b-icon>
+        </b-button>
+      </div>
+    </div>
     <b-container>
       <b-row>
         <b-col class="d-flex align-items-center flex-column"

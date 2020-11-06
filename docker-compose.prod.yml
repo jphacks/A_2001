@@ -4,7 +4,7 @@ services:
     build:
       context: ./nginx
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - "10000:10000"
     entrypoint: dockerize -wait http://web:8080 -wait http://frontend:3000 -wait tcp://db:3306 -timeout 300s -wait-retry-interval 30s
@@ -37,12 +37,7 @@ services:
       dockerfile: Dockerfile.prod
       context: ./frontend
     tty: true
-    volumes:
-      - ./frontend/app:/app
-    command: yarn dev
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
-      API_URL: "http://localhost:10000"
+    command: yarn start
     expose:
       - "3000"
     depends_on:
