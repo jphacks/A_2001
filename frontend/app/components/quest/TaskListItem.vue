@@ -157,7 +157,7 @@ export default {
           .$delete(url)
           .then(() => {
             if (!this.isSubtask)
-              this.$store.commit('quest/decrementUndoneCnt', questId);
+              this.$store.commit('quest/incrementUndoneCnt', questId);
             this.task.done = false;
           })
           .catch(() => alert('done error'));
@@ -166,7 +166,7 @@ export default {
           .$put(url)
           .then(() => {
             if (!this.isSubtask)
-              this.$store.commit('quest/incrementUndoneCnt', questId);
+              this.$store.commit('quest/decrementUndoneCnt', questId);
             this.task.done = true;
           })
           .catch(() => alert('done error'));

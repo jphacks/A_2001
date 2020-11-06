@@ -1,5 +1,5 @@
 <template>
-  <div class="animated fadeIn">
+  <div class="animated fadeIn container">
     <template v-if="!$fetchState.pending">
       <b-card-group columns class="card-columns cols-2">
         <b-card header="経験値">

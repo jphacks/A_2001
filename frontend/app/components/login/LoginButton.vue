@@ -50,7 +50,7 @@ export default {
                   .auth()
                   .signOut()
                   .then(() => {
-                    this.$router.replace('/');
+                    this.$router.replace('/status');
                   });
               })
               .catch(() => {
