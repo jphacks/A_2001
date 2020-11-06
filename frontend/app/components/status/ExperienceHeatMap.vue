@@ -115,7 +115,6 @@ export default {
       date.setSeconds(0);
 
       const colors = [];
-      const maxExp = Math.max(...Object.values(exp));
       for (let i = 0; i < this.mapWidth; i++) {
         const dateString = this.getDateString(date);
         const expVal = exp[dateString] ?? 0;

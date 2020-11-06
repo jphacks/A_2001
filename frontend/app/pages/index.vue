@@ -25,21 +25,28 @@
           icon="chevron-right"
           shift-h="4"
           variant="white"
-        ></b-icon>
+          ><b-icon-chevron-right
+        /></b-icon>
       </b-button>
     </b-jumbotron>
     <b-container>
       <b-row>
         <b-col class="d-flex align-items-center flex-column"
-          ><b-icon icon="bar-chart-line" class="icon"></b-icon>
+          ><b-icon icon="bar-chart-line" class="icon"
+            ><b-icon-bar-chart-line
+          /></b-icon>
           <h3>今までにこなしたタスクが経験値として見れる</h3></b-col
         >
         <b-col class="d-flex align-items-center flex-column"
-          ><b-icon icon="bar-chart-line" class="icon"></b-icon>
+          ><b-icon icon="bar-chart-line" class="icon"
+            ><b-icon-bar-chart-line
+          /></b-icon>
           <h3>ヒートマップによるタスクの視覚化</h3></b-col
         >
         <b-col class="d-flex align-items-center flex-column"
-          ><b-icon icon="bar-chart-line" class="icon"></b-icon>
+          ><b-icon icon="bar-chart-line" class="icon"
+            ><b-icon-bar-chart-line
+          /></b-icon>
           <h3>細かいタスク管理</h3></b-col
         >
       </b-row>
