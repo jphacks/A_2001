@@ -138,9 +138,6 @@ export default {
         this.deleted = true;
       }
     },
-
-
-
     toggleDone() {
       const questId = parseInt(this.$route.params.quest);
       const url = this.isSubtask
