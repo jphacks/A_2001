@@ -1,5 +1,5 @@
 <template>
-  <div @click="login">
+  <div class="icon-button" @click="login">
     <b-card :no-body="true">
       <b-card-body class="p-0 clearfix">
         <i
@@ -65,3 +65,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.icon-button {
+  cursor: pointer;
+}
+</style>

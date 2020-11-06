@@ -34,11 +34,6 @@ export default {
     return {
       providers: [
         {
-          name: 'twitter',
-          color: 'info',
-          Provider: firebase.auth.TwitterAuthProvider,
-        },
-        {
           name: 'google',
           color: 'danger',
           Provider: firebase.auth.GoogleAuthProvider,
