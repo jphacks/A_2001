@@ -8,8 +8,14 @@
               {{ quest.name }}</b-col
             >
             <b-col cols="auto" class="p-3 text-danger">
-              <i class="fa fa-sm fa-trash-o" @click="deleteQuest" />
+              <i
+                class="fa fa-sm fa-trash-o icon-button"
+                v-b-modal.modal-quest-delete
+              />
             </b-col>
+            <b-modal id="modal-quest-delete" @ok="deleteQuest">
+              <p>クエストを削除しますか？</p>
+            </b-modal>
           </b-row>
         </b-container>
         <div v-else class="quest-name">
@@ -152,7 +158,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.icon-button::before {
+  cursor: pointer;
+}
+
 .quest-name {
   width: 100%;
   border: none;

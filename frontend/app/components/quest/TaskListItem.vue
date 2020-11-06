@@ -6,10 +6,14 @@
   >
     <template v-if="!task.done">
       <template v-if="!isSubtask">
-        <i v-if="focused" class="fa fa-lg fa-thumb-tack" @click="toggleDoing" />
+        <i
+          v-if="focused"
+          class="fa fa-lg fa-thumb-tack icon-button"
+          @click="toggleDoing"
+        />
         <i
           v-else
-          class="fa fa-lg fa-thumb-tack"
+          class="fa fa-lg fa-thumb-tack icon-button"
           :style="{ color: '#cccccc' }"
           @click="toggleDoing"
         />
@@ -29,16 +33,20 @@
       />
       <i
         v-if="!isSubtask"
-        class="fa fa-plus-square-o ml-2 fa-lg icon text-muted"
+        class="fa fa-plus-square-o ml-2 fa-lg icon text-muted icon-button"
         @click="addNewTask"
       />
       <i
-        class="fa fa-minus-square-o ml-2 fa-lg icon text-muted"
-        @click="deleteTask"
+        class="fa fa-minus-square-o ml-2 fa-lg icon text-muted icon-button"
+        v-b-modal="!isSubtask ? `modal-task-delete${task.id}` : ''"
+        @click="deleteTask(isSubtask)"
       />
+      <b-modal :id="`modal-task-delete${task.id}`" @ok="deleteTask(true)">
+        <p>タスクを削除しますか？</p>
+      </b-modal>
     </template>
     <template v-else>
-      <i class="fa fa-lg fa-check-circle-o text-success" />
+      <i class="fa fa-lg fa-check-circle-o text-success icon-button" />
       <p class="mb-0 ml-1" :class="{ 'task-name': !isSubtask }">
         {{ task.name }}
       </p>
@@ -117,9 +125,8 @@ export default {
       const index = [].findIndex.call(elements, (e) => e === event.target);
       if (index - 1 >= 0) elements[index - 1].focus();
     },
-    deleteTask(e) {
-      // ボタンで削除するとき
-      if (e.target.tagName === 'I') {
+    deleteTask(isButton) {
+      if (isButton) {
         this.$emit('deleteTask', this.task.id);
         return;
       }
@@ -161,6 +168,10 @@ export default {
 <style scoped>
 *:focus {
   outline: none;
+}
+
+.icon-button::before {
+  cursor: pointer;
 }
 
 .task-name,
