@@ -4,50 +4,45 @@
     @mouseover="focused = true"
     @mouseout="focused = false"
   >
-    <i
-      class="fa fa-lg"
-      :class="task.done ? 'fa-check-circle-o' : 'fa-circle-o'"
-      @click="toggleDone"
-    />
-    <input
-      :ref="`task${task.id}`"
-      v-model="task.name"
-      class="focusable"
-      :class="isSubtask ? 'subtask-name' : 'task-name'"
-      placeholder="タスクを入力"
-      @blur="updateTask(task)"
-      @keydown.enter="addNewTask"
-      @keydown.prevent.down="moveNext"
-      @keydown.prevent.up="movePrev"
-      @keydown.delete="deleteTask"
-    />
-    <i
-      v-show="!isSubtask && (task.start !== null || focused)"
-      class="fa mr-2 icon"
-      :class="task.start !== null ? 'fa-hourglass-start' : 'fa-hourglass-end'"
-      @click="toggleDoing"
-    ></i>
-    <!-- <b-form-group>
-      <b-form-radio-group
-        id="btn-radios-2"
-        v-model="selected"
-        :options="options"
-        buttons
-        button-variant="outline-primary"
-        size="sm"
-        name="radio-btn-outline"
-      ></b-form-radio-group>
-    </b-form-group> -->
+    <template v-if="!task.done">
+      <template v-if="!isSubtask">
+        <i v-if="focused" class="fa fa-lg fa-thumb-tack" @click="toggleDoing" />
+        <i
+          v-else
+          class="fa fa-lg fa-thumb-tack"
+          :style="{ color: '#cccccc' }"
+          @click="toggleDoing"
+        />
+      </template>
 
-    <i
-      v-if="!isSubtask"
-      class="fa fa-plus-square-o ml-2 fa-lg icon text-muted"
-      @click="addNewTask"
-    />
-    <i
-      class="fa fa-minus-square-o ml-2 fa-lg icon text-muted"
-      @click="deleteTask"
-    />
+      <input
+        :ref="`task${task.id}`"
+        v-model="task.name"
+        class="focusable"
+        :class="isSubtask ? 'subtask-name' : 'task-name'"
+        placeholder="タスクを入力"
+        @blur="updateTask(task)"
+        @keydown.enter="addNewTask"
+        @keydown.prevent.down="moveNext"
+        @keydown.prevent.up="movePrev"
+        @keydown.delete="deleteTask"
+      />
+      <i
+        v-if="!isSubtask"
+        class="fa fa-plus-square-o ml-2 fa-lg icon text-muted"
+        @click="addNewTask"
+      />
+      <i
+        class="fa fa-minus-square-o ml-2 fa-lg icon text-muted"
+        @click="deleteTask"
+      />
+    </template>
+    <template v-else>
+      <i class="fa fa-lg fa-check-circle-o text-success" />
+      <p class="mb-0 ml-1" :class="{ 'task-name': !isSubtask }">
+        {{ task.name }}
+      </p>
+    </template>
   </div>
 </template>
 
@@ -66,12 +61,14 @@ export default {
       type: Number,
       default: null,
     },
+    isDoing: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       focused: false,
-      // timerId: null,
-      // totalTime: 0,
       deleted: false,
       selected: 'stop',
       options: [
@@ -82,23 +79,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.$refs[`task${this.task.id}`].focus();
+      if (`task${this.task.id}` in this.$refs) {
+        this.$refs[`task${this.task.id}`].focus();
+      }
     });
   },
-  //   if (this.task.start !== null) {
-  //     this.totalTime = Math.round(
-  //       (new Date().getTime() - new Date(this.task.start + '+0900').getTime()) /
-  //         1000
-  //     );
-  //     this.timerId = setInterval(() => this.updateTime(), 1000);
-  //   }
-  // beforeDestroy() {
-  //   clearInterval(this.timerId);
-  // },
   methods: {
-    // updateTime() {
-    //   this.totalTime++;
-    // },
     updateTask() {
       // 削除されたときにも@blurが発生するのでそのときは取り除く
       if (!this.deleted) this.$emit('updateTask', this.task);
@@ -146,34 +132,11 @@ export default {
       }
     },
 
-    toggleDone() {
-      const questId = parseInt(this.$route.params.quest);
-      const url = this.isSubtask
-        ? `/api/quests/${questId}/tasks/${this.parentTaskId}/subtasks/${this.task.id}/done`
-        : `/api/quests/${questId}/tasks/${this.task.id}/done`;
-
-      if (this.task.done === true) {
-        this.$api
-          .$delete(url)
-          .then(() => {
-            if (!this.isSubtask)
-              this.$store.commit('quest/decrementUndoneCnt', questId);
-            this.task.done = false;
-          })
-          .catch(() => alert('done error'));
-      } else {
-        this.$api
-          .$put(url)
-          .then(() => {
-            if (!this.isSubtask)
-              this.$store.commit('quest/incrementUndoneCnt', questId);
-            this.task.done = true;
-          })
-          .catch(() => alert('done error'));
-      }
-    },
     toggleDoing() {
-      // TODO: this.task.start情報をthis.taskに持たせるべきか考える
+      if (this.isDoing) {
+        alert('実行中のタスクがあります');
+        return;
+      }
       this.$api
         .$put(
           `/api/quests/${this.$route.params.quest}/tasks/${this.task.id}/time`
@@ -186,15 +149,6 @@ export default {
             this.task.start = null;
           }
           this.updateTask();
-          // タイマー機能は一旦保留
-          // if (this.timerId === null) {
-          //   // 開始時の処理
-          //   this.timerId = setInterval(() => this.updateTime(), 1000);
-          // } else {
-          //   // 終了時の処理
-          //   clearInterval(this.timerId);
-          //   this.timerId = null;
-          // }
         })
         .catch((err) => {
           console.error(err);

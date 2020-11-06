@@ -1,59 +1,70 @@
 <template>
-  <div>
-    <b-list-group>
-      <div v-for="task in tasks" :key="task.id" class="mb-1">
-        <template v-if="task.start === null && displayDoneTask == task.done">
-          <b-list-group-item class="task flex-end">
-            <TaskListItem
-              :is-subtask="false"
-              :task="task"
-              :is-doing="isDoing"
-              @addNewTask="addNewTask"
-              @addNewSubtask="addNewSubtask"
-              @updateTask="updateTask"
-              @deleteTask="deleteTask"
-            />
-          </b-list-group-item>
-          <SubtaskList :task="task" :display-done-task="displayDoneTask" />
-        </template>
-      </div>
-      <b-button v-if="!displayDoneTask" variant="primary" @click="addNewTask"
-        >タスクを追加</b-button
-      >
-    </b-list-group>
+  <div class="card border-primary mb-3">
+    <div class="card-header bg-info font-weight-bold">
+      <i class="fa fa-lg fa-thumb-tack" />実行中
+      <b-spinner small variant="light" type="grow"></b-spinner>
+    </div>
+    <div class="card-body">
+      <b-list-group>
+        <b-button v-if="isCompleted" variant="primary" @click="toggleDoing"
+          >実行済みにする</b-button
+        >
+        <b-button v-else variant="secondary" @click="toggleDoing"
+          >未実行に移動</b-button
+        >
+        <b-list-group-item class="task flex-end">
+          <DoingTaskListItem
+            ref="doingTaskListItem"
+            :is-subtask="false"
+            :task="task"
+            :toggle-subtask="toggleSubtask"
+          />
+        </b-list-group-item>
+        <DoingSubtaskList ref="doingSubtaskList" :task="task" />
+      </b-list-group>
+    </div>
   </div>
 </template>
 
 <script>
-import TaskListItem from '~/components/quest/TaskListItem';
-import SubtaskList from '~/components/quest/SubtaskList';
+import DoingTaskListItem from '~/components/quest/DoingTaskListItem';
+import DoingSubtaskList from '~/components/quest/DoingSubtaskList';
 
 export default {
   components: {
-    TaskListItem,
-    SubtaskList,
+    DoingTaskListItem,
+    DoingSubtaskList,
   },
   props: {
-    tasks: {
-      type: Array,
+    task: {
+      type: Object,
       required: true,
-    },
-    displayDoneTask: {
-      type: Boolean,
-      default: false,
     },
   },
   computed: {
-    isDoing() {
-      for (const task of Object.values(this.tasks)) {
-        if (task.start) {
-          return true;
+    isCompleted() {
+      if (this.task.done) {
+        for (const subtask of Object.values(this.task.subtasks)) {
+          if (!subtask.done) {
+            return false;
+          }
         }
+        return true;
+      } else {
+        return false;
       }
-      return false;
     },
   },
+
   methods: {
+    toggleSubtask() {
+      if ('doingSubtaskList' in this.$refs) {
+        this.$refs.doingSubtaskList.toggleSubtask();
+      }
+    },
+    toggleDoing() {
+      this.$refs.doingTaskListItem.toggleDoing();
+    },
     updateTask(task) {
       const questId = this.$route.params.quest;
       this.$api
@@ -65,6 +76,7 @@ export default {
           console.log(err);
         });
     },
+
     addNewTask() {
       const questId = parseInt(this.$route.params.quest);
       this.$api
