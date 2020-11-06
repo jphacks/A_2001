@@ -17,7 +17,7 @@
             ref="doingTaskListItem"
             :is-subtask="false"
             :task="task"
-            :toggle-subtask="toggleSubtask"
+            @doneTask="toggleSubtask"
           />
         </b-list-group-item>
         <DoingSubtaskList ref="doingSubtaskList" :task="task" />
@@ -57,9 +57,9 @@ export default {
   },
 
   methods: {
-    toggleSubtask() {
+    toggleSubtask(done) {
       if ('doingSubtaskList' in this.$refs) {
-        this.$refs.doingSubtaskList.toggleSubtask();
+        this.$refs.doingSubtaskList.toggleDone(done);
       }
     },
     toggleDoing() {

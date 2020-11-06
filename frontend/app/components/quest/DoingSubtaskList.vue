@@ -31,13 +31,12 @@ export default {
     },
   },
   methods: {
-    toggleSubtask() {
-      // for (const subtask of this.task.subtasks) {
-      //   if (`DoingTaskListItem${subtask.id}` in this.$refs) {
-      //     console.log(this.$refs[`DoingTaskListItem${subtask.id}`]);
-      //     this.$refs[`DoingTaskListItem${subtask.id}`].toggleDone();
-      //   }
-      // }
+    toggleDone(done) {
+      for (const subtask of this.task.subtasks) {
+        if (`DoingTaskListItem${subtask.id}` in this.$refs) {
+          this.$refs[`DoingTaskListItem${subtask.id}`][0].toggleDone(done);
+        }
+      }
     },
   },
 };

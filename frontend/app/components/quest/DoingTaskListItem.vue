@@ -1,20 +1,20 @@
 <template>
   <div class="d-flex align-items-center">
-    <i
+    <b-form-checkbox
+      v-model="task.done"
+      :class="{ 'task-name': !isSubtask }"
+      @change="toggleDone(task.done)"
+      >{{ task.name }}</b-form-checkbox
+    >
+    <!-- <i
       class="fa fa-lg text-success"
       :class="task.done ? 'fa-check-circle-o' : 'fa-circle-o'"
       @click="toggleDone"
     />
     <p class="mb-0 ml-1" :class="{ 'task-name': !isSubtask }">
       {{ task.name }}
-    </p>
+    </p> -->
     <!-- チェックボックスを元に戻すかもしれない -->
-    <!-- <b-form-checkbox
-      v-model="task.done"
-      :class="{ 'task-name': !isSubtask }"
-      @change="toggleDone"
-      >{{ task.name }}</b-form-checkbox
-    > -->
   </div>
 </template>
 
@@ -33,10 +33,6 @@ export default {
       type: Number,
       default: null,
     },
-    toggleSubtask: {
-      type: Function,
-      default: () => {},
-    },
   },
   data() {
     return {
@@ -48,17 +44,18 @@ export default {
   },
 
   methods: {
-    toggleDone() {
+    // boolean
+    toggleDone(done) {
       const questId = parseInt(this.$route.params.quest);
       const url = this.isSubtask
         ? `/api/quests/${questId}/tasks/${this.parentTaskId}/subtasks/${this.task.id}/done`
         : `/api/quests/${questId}/tasks/${this.task.id}/done`;
-      if (this.task.done === true) {
+      if (done) {
         this.$api
           .$delete(url)
           .then(() => {
             if (!this.isSubtask) {
-              this.$store.commit('quest/decrementUndoneCnt', questId);
+              this.$store.commit('quest/incrementUndoneCnt', questId);
             }
             this.task.done = false;
           })
@@ -68,15 +65,30 @@ export default {
           .$put(url)
           .then(() => {
             if (!this.isSubtask) {
-              this.$store.commit('quest/incrementUndoneCnt', questId);
+              this.$store.commit('quest/decrementUndoneCnt', questId);
             }
             this.task.done = true;
           })
           .catch(() => alert('done error'));
       }
       if (!this.isSubtask) {
-        this.toggleSubtask();
+        this.$emit('doneTask', done);
       }
+    },
+    done() {
+      const questId = parseInt(this.$route.params.quest);
+      const url = this.isSubtask
+        ? `/api/quests/${questId}/tasks/${this.parentTaskId}/subtasks/${this.task.id}/done`
+        : `/api/quests/${questId}/tasks/${this.task.id}/done`;
+      this.$api
+        .$put(url)
+        .then(() => {
+          if (!this.isSubtask) {
+            this.$store.commit('quest/incrementUndoneCnt', questId);
+          }
+          this.task.done = false;
+        })
+        .catch(() => alert('done error'));
     },
     toggleDoing() {
       // TODO: this.task.start情報をthis.taskに持たせるべきか考える
