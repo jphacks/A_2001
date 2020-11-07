@@ -30,6 +30,8 @@
         @keydown.prevent.down="moveNext"
         @keydown.prevent.up="movePrev"
         @keydown.delete="deleteTask(false)"
+        @compositionstart="composing = true"
+        @compositionend="composing = false"
       />
       <i
         v-if="!isSubtask"
@@ -79,10 +81,7 @@ export default {
       focused: false,
       deleted: false,
       selected: 'stop',
-      options: [
-        { text: 'stop', value: 'stop' },
-        { text: 'start', value: 'start' },
-      ],
+      composing: false,
     };
   },
   mounted() {
@@ -116,14 +115,18 @@ export default {
       }
     },
     moveNext(event) {
-      const elements = document.getElementsByClassName('focusable');
-      const index = [].findIndex.call(elements, (e) => e === event.target);
-      if (index + 1 < elements.length) elements[index + 1].focus();
+      if (!this.composing) {
+        const elements = document.getElementsByClassName('focusable');
+        const index = [].findIndex.call(elements, (e) => e === event.target);
+        if (index + 1 < elements.length) elements[index + 1].focus();
+      }
     },
     movePrev(event) {
-      const elements = document.getElementsByClassName('focusable');
-      const index = [].findIndex.call(elements, (e) => e === event.target);
-      if (index - 1 >= 0) elements[index - 1].focus();
+      if (!this.composing) {
+        const elements = document.getElementsByClassName('focusable');
+        const index = [].findIndex.call(elements, (e) => e === event.target);
+        if (index - 1 >= 0) elements[index - 1].focus();
+      }
     },
     deleteTask(isButton) {
       if (isButton) {
