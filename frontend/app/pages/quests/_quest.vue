@@ -154,7 +154,7 @@ export default {
         .$delete(`/api/quests/${questId}`)
         .then(() => {
           this.$store.commit('quest/deleteQuest', questId);
-          this.$router.push('/');
+          this.$router.replace('/status');
         })
         .catch((err) => console.log(err));
     },
