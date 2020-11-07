@@ -2,36 +2,25 @@
   <div>
     <b-list-group>
       <div v-for="task in tasks" :key="task.id">
-        <template v-if="task.start === null && !isDone(task)">
+        <template v-if="task.start === null && isDone(task)">
           <b-list-group-item class="task flex-end">
-            <TaskListItem
-              :is-subtask="false"
-              :task="task"
-              :is-doing="isDoing"
-              @addNewTask="addNewTask"
-              @addNewSubtask="addNewSubtask"
-              @updateTask="updateTask"
-              @deleteTask="deleteTask"
-            />
+            <DoneTaskListItem :is-subtask="false" :task="task" />
           </b-list-group-item>
-          <SubtaskList :task="task" />
+          <DoneSubtaskList :task="task" />
         </template>
       </div>
-      <b-button v-if="!displayDoneTask" variant="primary" @click="addNewTask"
-        >タスクを追加</b-button
-      >
     </b-list-group>
   </div>
 </template>
 
 <script>
-import TaskListItem from '~/components/quest/TaskListItem';
-import SubtaskList from '~/components/quest/SubtaskList';
+import DoneTaskListItem from '~/components/quest/DoneTaskListItem';
+import DoneSubtaskList from '~/components/quest/DoneSubtaskList';
 
 export default {
   components: {
-    TaskListItem,
-    SubtaskList,
+    DoneTaskListItem,
+    DoneSubtaskList,
   },
   props: {
     tasks: {
