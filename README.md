@@ -6,7 +6,7 @@
 
 ### モチベーション管理 X Tech
 
-「SHIBAFU -Status Heatmap and Illustration 〇〇 Browser Application For User's motivation-」は経験値システムやヒートマップを導入した、ブラウザー上で動作するタスク管理アプリです。設定したタスクをこなすことで経験値がたまり、ゲーム的な体験を提供し、モチベーションアップにつなげることができます。
+「SHIBAFU -Status Heatmap and Illustration 〇〇 Browser Application For User's motivation-」は経験値システムやヒートマップを導入した、ブラウザー上で動作するタスク管理アプリです。設定したタスクをこなすことで経験値がたまり、ゲーム的な体験を提供し、モチベーションアップに繋げることができます。
 
 ### 背景(製品開発のきっかけ、課題等）
 
