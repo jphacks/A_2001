@@ -2,23 +2,23 @@
   <div class="animated fadeIn container">
     <template v-if="!$fetchState.pending">
       <b-card-group columns class="card-columns cols-2">
-        <b-card header="経験値">
+        <b-card header="Radar chart">
           <div class="chart-wrapper">
             <ExperienceRadarChart :status="status" />
           </div>
         </b-card>
-        <b-card header="経験値">
+        <b-card header="Pie chart">
           <div class="chart-wrapper">
             <ExperiencePieChart :status="status" />
           </div>
         </b-card>
       </b-card-group>
-      <b-card header="経験値">
+      <b-card header="Heatmap">
         <div class="chart-wrapper">
           <ExperienceHeatMap :status="status" />
         </div>
       </b-card>
-      <b-card header="経験値">
+      <b-card header="Line chart">
         <div class="chart-wrapper">
           <ExperienceLineChart :status="status" />
         </div>
