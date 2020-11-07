@@ -42,7 +42,7 @@
         @click="deleteTask(isSubtask)"
       />
       <b-modal :id="`modal-task-delete${task.id}`" @ok="deleteTask(true)">
-        <p>タスクを削除しますか？</p>
+        タスクを削除しますか？
       </b-modal>
     </template>
     <template v-else>
@@ -134,8 +134,10 @@ export default {
       // 長押ししたときに1度だけifの中に入る
       if (this.task.name.length === 0 && !this.deleted) {
         // 0文字の状態でDELETEを押すと削除
-        this.$emit('deleteTask', this.task.id);
-        this.deleted = true;
+        if (this.$bvModal.show(`modal-task-delete${this.task.id}`)) {
+          this.$emit('deleteTask', this.task.id);
+          this.deleted = true;
+        }
       }
     },
     toggleDone() {
