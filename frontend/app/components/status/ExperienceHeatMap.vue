@@ -19,7 +19,7 @@ export default {
     // とりあえず今から40日分？
     const exps = Object.values(this.status.exps);
     const datasets = exps.map((val, i) => {
-      const bgColor = this.generateColor(val.exp, i + 1, exps.length);
+      const bgColor = this.generateColor(val.exp, i, exps.length);
       return {
         data: new Array(this.mapWidth).fill(1),
         barPercentage: 1.0,
