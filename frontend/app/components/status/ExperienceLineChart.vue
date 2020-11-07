@@ -38,7 +38,7 @@ export default {
       date.setHours(0);
       date.setMinutes(0);
       date.setSeconds(0);
-      labels.unshift(this.getDateString(date));
+      labels.push(this.getDateString(date));
     }
 
     this.renderChart(
@@ -58,9 +58,6 @@ export default {
                 displayFormats: {
                   quarter: 'MMM D',
                 },
-              },
-              ticks: {
-                reverse: true,
               },
             },
           ],
