@@ -2,27 +2,22 @@
   <div class="app">
     <AppHeader />
     <div class="app-body">
-      <Sidebar :nav-items="nav" />
+      <Sidebar />
       <main class="main">
-        <breadcrumb :list="list" />
-        <div class="container-fluid">
+        <div class="container-fluid mt-4 px-md-3 px-0">
           <nuxt />
         </div>
       </main>
-      <AppAside />
     </div>
     <AppFooter />
   </div>
 </template>
 
 <script>
-import nav from './menu';
 import {
   Header as AppHeader,
   Sidebar,
-  Aside as AppAside,
   Footer as AppFooter,
-  Breadcrumb,
 } from '~/components/';
 
 export default {
@@ -30,13 +25,11 @@ export default {
   components: {
     AppHeader,
     Sidebar,
-    AppAside,
     AppFooter,
-    Breadcrumb,
   },
   data() {
     return {
-      nav: nav.items,
+      // nav: nav.items,
     };
   },
   computed: {

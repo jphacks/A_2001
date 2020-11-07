@@ -1,0 +1,117 @@
+<template>
+  <div>
+    <b-list-group>
+      <div v-for="task in tasks" :key="task.id">
+        <template v-if="task.start === null && isDone(task)">
+          <b-list-group-item class="task flex-end">
+            <DoneTaskListItem :is-subtask="false" :task="task" />
+          </b-list-group-item>
+          <DoneSubtaskList :task="task" />
+        </template>
+      </div>
+    </b-list-group>
+  </div>
+</template>
+
+<script>
+import DoneTaskListItem from '~/components/quest/DoneTaskListItem';
+import DoneSubtaskList from '~/components/quest/DoneSubtaskList';
+
+export default {
+  components: {
+    DoneTaskListItem,
+    DoneSubtaskList,
+  },
+  props: {
+    tasks: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    isDoing() {
+      for (const task of Object.values(this.tasks)) {
+        if (task.start) {
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+  methods: {
+    isDone(task) {
+      if (!task.done) {
+        return false;
+      } else {
+        for (const subtask of task.subtasks) {
+          if (!subtask.done) {
+            return false;
+          }
+        }
+      }
+      return true;
+    },
+    updateTask(task) {
+      const questId = this.$route.params.quest;
+      this.$api
+        .$patch(`/api/quests/${questId}/tasks/${task.id}`, {
+          name: task.name,
+        })
+        .then(() => {})
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    addNewTask() {
+      const questId = parseInt(this.$route.params.quest);
+      this.$api
+        .$post(`/api/quests/${questId}/tasks`, {
+          name: 'Untitled',
+          description: '',
+        })
+        .then((res) => {
+          this.tasks.push(res);
+          this.$store.commit('quest/incrementUndoneCnt', questId);
+          // サーバー側で順序は保存していないので途中挿入はしないことにする
+          // this.tasks.splice(index + 1, 0, res);
+        })
+        .catch((err) => console.log(err));
+    },
+    addNewSubtask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      const questId = this.$route.params.quest;
+      this.$api
+        .$post(`/api/quests/${questId}/tasks/${taskId}/subtasks`, {
+          name: 'Untitled',
+          description: '',
+        })
+        .then((res) => {
+          this.tasks[index].subtasks.push(res);
+        })
+        .catch((err) => console.log(err));
+    },
+    deleteTask(taskId) {
+      const index = this.tasks.findIndex((task) => {
+        return task.id === taskId;
+      });
+      const questId = parseInt(this.$route.params.quest);
+      this.$api
+        .$delete(`/api/quests/${questId}/tasks/${taskId}`)
+        .then(() => {
+          this.tasks.splice(index, 1);
+          this.$store.commit('quest/decrementUndoneCnt', questId);
+        })
+        .catch((err) => console.log(err));
+    },
+  },
+};
+</script>
+
+<style scoped>
+.task {
+  border: none;
+  border-top: solid 1px gray;
+}
+</style>

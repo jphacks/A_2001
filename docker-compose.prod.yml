@@ -4,7 +4,7 @@ services:
     build:
       context: ./nginx
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     ports:
       - "10000:10000"
     entrypoint: dockerize -wait http://web:8080 -wait http://frontend:3000 -wait tcp://db:3306 -timeout 300s -wait-retry-interval 30s
@@ -23,6 +23,8 @@ services:
       APP_DATABASE_NAME: todo
       APP_DATABASE_USER: root
       APP_DATABASE_PASSWORD: root
+      TZ: "Asia/Tokyo"
+      SECRET_KEY: "./a-2001-firebase-adminsdk-ywn4n-f547fd749c.json"
     expose:
       - "8080"
     volumes:
@@ -35,11 +37,7 @@ services:
       dockerfile: Dockerfile.prod
       context: ./frontend
     tty: true
-    volumes:
-      - ./frontend/app:/app
-    command: yarn dev
-    environment:
-      CHOKIDAR_USEPOLLING: "true"
+    command: yarn start
     expose:
       - "3000"
     depends_on:
