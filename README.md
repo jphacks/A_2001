@@ -86,4 +86,8 @@
 
 - タスクを管理する API
 - Vue.js を用いた Web アプリ
-- 特に力を入れた部分をファイルリンク、または commit_id を記載してください。
+- 特に力を入れたファイル
+    - [ヒートマップの可視化](https://github.com/jphacks/A_2001/blob/develop/frontend/app/components/status/ExperienceHeatMap.vue)
+    - [経験値の増加の様子の可視化](https://github.com/jphacks/A_2001/blob/develop/frontend/app/components/status/ExperienceLineChart.vue)
+    - [クエストごとの相対的な経験値の可視化](https://github.com/jphacks/A_2001/blob/develop/frontend/app/components/status/ExperiencePieChart.vue)
+    - [経験値の累積の可視化](https://github.com/jphacks/A_2001/blob/develop/frontend/app/components/status/ExperienceRadarChart.vue)
