@@ -15,7 +15,7 @@
           @updateTask="updateSubtask"
           @deleteTask="deleteSubtask"
         />
-        <DoneTaskListItem v-else :task="task" :is-subtask="true" />
+        <DoneTaskListItem v-else :task="subtask" :is-subtask="true" />
       </b-list-group-item>
     </div>
   </div>
