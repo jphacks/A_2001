@@ -5,16 +5,16 @@
         <div id="quest-name-wrapper" class="m-3 d-flex align-items-center">
           <input
             id="quest-name"
-            class="w-100 text-bold"
             v-model="quest.name"
+            class="w-100 text-bold"
             placeholder="クエスト名を入力"
             autocomplete="off"
             @blur="updateQuestName"
             @keydown.enter="updateQuestName"
           />
           <i
-            class="ml-auto mr-5 fa fa-sm fa-trash-o icon-button text-danger"
             v-b-modal.modal-quest-delete
+            class="ml-auto mr-5 fa fa-sm fa-trash-o icon-button text-danger"
           />
           <b-modal id="modal-quest-delete" @ok="deleteQuest">
             <p>クエストを削除しますか？</p>
@@ -78,7 +78,7 @@
       <div v-if="displayDoneTask" class="card my-5">
         <div class="card-header">実行済</div>
         <div class="card-body">
-          <TaskList :tasks="tasks" :display-done-task="displayDoneTask" />
+          <DoneTaskList :tasks="tasks" />
         </div>
       </div>
     </div>
@@ -87,11 +87,13 @@
 
 <script>
 import TaskList from '~/components/quest/TaskList';
+import DoneTaskList from '~/components/quest/DoneTaskList';
 import DoingTask from '~/components/quest/DoingTask';
 
 export default {
   component: {
     TaskList,
+    DoneTaskList,
     DoingTask,
   },
   data() {
@@ -117,7 +119,14 @@ export default {
       let cnt = 0;
       for (const task of this.tasks) {
         if (task.done) {
-          cnt++;
+          let flag = true;
+          for (const subtask of task.subtasks) {
+            if (!subtask.done) {
+              flag = false;
+              break;
+            }
+          }
+          if (flag) cnt++;
         }
       }
       return cnt;

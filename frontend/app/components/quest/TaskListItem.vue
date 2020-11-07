@@ -4,55 +4,47 @@
     @mouseover="focused = true"
     @mouseout="focused = false"
   >
-    <template v-if="!task.done">
-      <template v-if="!isSubtask">
-        <i
-          v-if="focused"
-          class="fa fa-lg fa-thumb-tack icon-button"
-          @click="toggleDoing"
-        />
-        <i
-          v-else
-          class="fa fa-lg fa-thumb-tack icon-button"
-          :style="{ color: '#cccccc' }"
-          @click="toggleDoing"
-        />
-      </template>
+    <template v-if="!isSubtask">
+      <i
+        v-if="focused"
+        class="fa fa-lg fa-thumb-tack icon-button"
+        @click="toggleDoing"
+      />
+      <i
+        v-else
+        class="fa fa-lg fa-thumb-tack icon-button"
+        :style="{ color: '#cccccc' }"
+        @click="toggleDoing"
+      />
+    </template>
 
-      <input
-        :ref="`task${task.id}`"
-        v-model="task.name"
-        class="focusable"
-        :class="isSubtask ? 'subtask-name' : 'task-name'"
-        placeholder="タスクを入力"
-        @blur="updateTask(task)"
-        @keydown.enter="addNewTask"
-        @keydown.prevent.down="moveNext"
-        @keydown.prevent.up="movePrev"
-        @keydown.delete="deleteTask(false)"
-        @compositionstart="composing = true"
-        @compositionend="composing = false"
-      />
-      <i
-        v-if="!isSubtask"
-        class="fa fa-plus-square-o ml-2 fa-lg icon text-muted icon-button"
-        @click="addNewTask"
-      />
-      <i
-        class="fa fa-minus-square-o ml-2 fa-lg icon text-muted icon-button"
-        v-b-modal="!isSubtask ? `modal-task-delete${task.id}` : ''"
-        @click="deleteTask(isSubtask)"
-      />
-      <b-modal :id="`modal-task-delete${task.id}`" @ok="deleteTask(true)">
-        タスクを削除しますか？
-      </b-modal>
-    </template>
-    <template v-else>
-      <i class="fa fa-lg fa-check-circle-o text-success icon-button" />
-      <p class="mb-0 ml-1" :class="{ 'task-name': !isSubtask }">
-        {{ task.name }}
-      </p>
-    </template>
+    <input
+      :ref="`task${task.id}`"
+      v-model="task.name"
+      class="focusable"
+      :class="isSubtask ? 'subtask-name' : 'task-name'"
+      placeholder="タスクを入力"
+      @blur="updateTask(task)"
+      @keydown.enter="addNewTask"
+      @keydown.prevent.down="moveNext"
+      @keydown.prevent.up="movePrev"
+      @keydown.delete="deleteTask(false)"
+      @compositionstart="composing = true"
+      @compositionend="composing = false"
+    />
+    <i
+      v-if="!isSubtask"
+      class="fa fa-plus-square-o ml-2 fa-lg icon text-muted icon-button"
+      @click="addNewTask"
+    />
+    <i
+      v-b-modal="!isSubtask ? `modal-task-delete${task.id}` : ''"
+      class="fa fa-minus-square-o ml-2 fa-lg icon text-muted icon-button"
+      @click="deleteTask(isSubtask)"
+    />
+    <b-modal :id="`modal-task-delete${task.id}`" @ok="deleteTask(true)">
+      タスクを削除しますか？
+    </b-modal>
   </div>
 </template>
 
@@ -85,11 +77,11 @@ export default {
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      if (`task${this.task.id}` in this.$refs) {
-        this.$refs[`task${this.task.id}`].focus();
-      }
-    });
+    // this.$nextTick(() => {
+    //   if (`task${this.task.id}` in this.$refs) {
+    //     this.$refs[`task${this.task.id}`].focus();
+    //   }
+    // });
   },
   methods: {
     updateTask() {

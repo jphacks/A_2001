@@ -6,28 +6,17 @@
         :key="subtask.id"
         class="subtask"
       >
-        <TaskListItem
-          v-if="!subtask.done"
-          :task="subtask"
-          :is-subtask="true"
-          :parent-task-id="task.id"
-          @addNewSubtask="addNewSubtask"
-          @updateTask="updateSubtask"
-          @deleteTask="deleteSubtask"
-        />
-        <DoneTaskListItem v-else :task="task" :is-subtask="true" />
+        <DoneTaskListItem :task="subtask" :is-subtask="true" />
       </b-list-group-item>
     </div>
   </div>
 </template>
 
 <script>
-import TaskListItem from '~/components/quest/TaskListItem';
 import DoneTaskListItem from '~/components/quest/DoneTaskListItem';
 
 export default {
   components: {
-    TaskListItem,
     DoneTaskListItem,
   },
   props: {
