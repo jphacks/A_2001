@@ -2,31 +2,23 @@
   <div class="card">
     <div class="card-header">
       <h3>
-        <b-container v-if="!isNameTyping" fluid class="text-left text-bold">
-          <b-row>
-            <b-col class="mr-auto p-3" @click="toggleQuestName">
-              {{ quest.name }}</b-col
-            >
-            <b-col cols="auto" class="p-3 text-danger">
-              <i
-                class="fa fa-sm fa-trash-o icon-button"
-                v-b-modal.modal-quest-delete
-              />
-            </b-col>
-            <b-modal id="modal-quest-delete" @ok="deleteQuest">
-              <p>クエストを削除しますか？</p>
-            </b-modal>
-          </b-row>
-        </b-container>
-        <div v-else class="quest-name">
+        <div id="quest-name-wrapper" class="m-3 d-flex align-items-center">
           <input
             id="quest-name"
-            v-model="tmpName"
-            class="quest-name"
+            class="w-100 text-bold"
+            v-model="quest.name"
             placeholder="クエスト名を入力"
+            autocomplete="off"
             @blur="updateQuestName"
             @keydown.enter="updateQuestName"
           />
+          <i
+            class="ml-auto mr-5 fa fa-sm fa-trash-o icon-button text-danger"
+            v-b-modal.modal-quest-delete
+          />
+          <b-modal id="modal-quest-delete" @ok="deleteQuest">
+            <p>クエストを削除しますか？</p>
+          </b-modal>
         </div>
       </h3>
 
@@ -93,8 +85,6 @@ export default {
         description: '',
       },
       tasks: [],
-      isNameTyping: false,
-      tmpName: '',
       displayDoneTask: false,
     };
   },
@@ -116,27 +106,17 @@ export default {
         const quest = res.quest;
         this.quest = quest;
         this.tasks = quest.tasks;
-        this.tmpName = quest.name;
         // 実行中のタスクがある場合はisDoingをtrueにする
       })
       .catch((err) => console.log(err));
   },
   methods: {
-    toggleQuestName() {
-      this.isNameTyping = true;
-      this.tmpName = this.quest.name;
-      this.$nextTick(() => document.getElementById('quest-name').focus());
-    },
     updateQuestName(e) {
       if (e.keyCode && e.keyCode !== 13) return; // 日本語入力確定を除外
-      this.isNameTyping = false;
-      if (this.tmpName.length === 0) {
-        return;
-      }
-
+      if (this.quest.name.length === 0) this.quest.name = 'Untitled';
       this.$api
         .$patch(`/api/quests/${this.$route.params.quest}`, {
-          name: this.tmpName,
+          name: this.quest.name,
         })
         .then((res) => {
           this.quest = res;
@@ -163,11 +143,13 @@ export default {
   cursor: pointer;
 }
 
-.quest-name {
-  width: 100%;
-  border: none;
-  border-radius: 0.2em;
+#quest-name-wrapper {
   outline: none;
-  height: 100%;
+}
+
+#quest-name {
+  background-color: #ddd0;
+  border: none;
+  outline: none;
 }
 </style>
