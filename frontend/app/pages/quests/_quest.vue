@@ -40,18 +40,34 @@
         >
       </div>
     </div>
-    <!-- <h5 class="card-title">{{ quest.description }}</h5> -->
 
     <div class="card-body">
-      <template v-for="task in tasks">
-        <DoingTask
-          v-if="task.start !== null"
-          :key="task.id"
-          :task="task"
-          class="mb-5"
-        />
-      </template>
-
+      <div class="card border-primary mb-3">
+        <div class="card-header bg-info font-weight-bold">
+          <i class="fa fa-lg fa-thumb-tack" />実行中
+          <b-spinner
+            v-if="isDoing"
+            small
+            variant="light"
+            type="grow"
+          ></b-spinner>
+        </div>
+        <template v-if="isDoing">
+          <template v-for="task in tasks">
+            <DoingTask
+              v-if="task.start !== null"
+              :key="task.id"
+              :task="task"
+              class="mb-5"
+            />
+          </template>
+        </template>
+        <h4 v-else class="text-muted text-center my-2">
+          現在実行中のタスクはありません。ピン留め<i
+            class="fa fa-lg fa-thumb-tack text-dark"
+          />をしてタスクを実行しましょう
+        </h4>
+      </div>
       <div class="card my-5">
         <div class="card-header">未実行</div>
         <div class="card-body">
@@ -89,6 +105,14 @@ export default {
     };
   },
   computed: {
+    isDoing() {
+      for (const task of Object.values(this.tasks)) {
+        if (task.start) {
+          return true;
+        }
+      }
+      return false;
+    },
     doneCnt() {
       let cnt = 0;
       for (const task of this.tasks) {

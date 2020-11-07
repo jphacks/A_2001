@@ -1,28 +1,22 @@
 <template>
-  <div class="card border-primary mb-3">
-    <div class="card-header bg-info font-weight-bold">
-      <i class="fa fa-lg fa-thumb-tack" />実行中
-      <b-spinner small variant="light" type="grow"></b-spinner>
-    </div>
-    <div class="card-body">
-      <b-list-group>
-        <b-button v-if="isCompleted" variant="primary" @click="toggleDoing"
-          >実行済みにする</b-button
-        >
-        <b-button v-else variant="secondary" @click="toggleDoing"
-          >未実行に移動</b-button
-        >
-        <b-list-group-item class="task flex-end">
-          <DoingTaskListItem
-            ref="doingTaskListItem"
-            :is-subtask="false"
-            :task="task"
-            @doneTask="toggleSubtask"
-          />
-        </b-list-group-item>
-        <DoingSubtaskList ref="doingSubtaskList" :task="task" />
-      </b-list-group>
-    </div>
+  <div class="card-body">
+    <b-list-group>
+      <b-button v-if="isCompleted" variant="primary" @click="toggleDoing"
+        >実行済みにする</b-button
+      >
+      <b-button v-else variant="secondary" @click="toggleDoing"
+        >未実行に移動</b-button
+      >
+      <b-list-group-item class="task flex-end">
+        <DoingTaskListItem
+          ref="doingTaskListItem"
+          :is-subtask="false"
+          :task="task"
+          @doneTask="toggleSubtask"
+        />
+      </b-list-group-item>
+      <DoingSubtaskList ref="doingSubtaskList" :task="task" />
+    </b-list-group>
   </div>
 </template>
 
