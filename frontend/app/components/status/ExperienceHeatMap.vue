@@ -15,12 +15,15 @@ export default {
     };
   },
   mounted() {
+    this.$refs.canvas.width = 0;
     // とりあえず今から40日分？
     const exps = Object.values(this.status.exps);
     const datasets = exps.map((val, i) => {
       const bgColor = this.generateColor(val.exp, i + 1, exps.length);
       return {
         data: new Array(this.mapWidth).fill(1),
+        barPercentage: 1.0,
+        categoryPercentage: 1.0,
         label: val.name,
         borderWidth: 0.2,
         borderColor: '#FFFFFF',
@@ -58,8 +61,6 @@ export default {
               type: 'time',
               time: {
                 unit: 'day',
-                min: minDisplayDate,
-                max: maxDisplayDate,
                 displayFormats: {
                   quarter: 'MMM D',
                 },
@@ -67,9 +68,8 @@ export default {
               gridLines: {
                 color: '#FFFFFF',
               },
-              barPercentage: 0.99,
-              categoryPercentage: 0.99,
               stacked: true,
+              ticks: { min: minDisplayDate, max: maxDisplayDate },
             },
           ],
           yAxes: [
@@ -90,7 +90,7 @@ export default {
         legend: {
           display: true,
           labels: {
-            fontColor: 'rgb(255, 99, 132)',
+            fontColor: '#000',
           },
         },
         tooltips: {
