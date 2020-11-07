@@ -22,9 +22,9 @@ export default {
       return `hsl(${(360 * index) / exps.length}, 75%, 75%)`;
     });
     const datasets = exps.map((val, i) => {
-      const bgColor = this.generateData(val.exp, i + 1, exps.length);
+      const { total_exp: totalExp } = val;
       return {
-        data: this.generateData(val.exp, val['total_exp']),
+        data: this.generateData(val.exp, totalExp),
         label: val.name,
         backgroundColor: colors[i],
         hoverBackgroundColor: colors[i],
