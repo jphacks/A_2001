@@ -29,7 +29,7 @@
         @keydown.enter="addNewTask"
         @keydown.prevent.down="moveNext"
         @keydown.prevent.up="movePrev"
-        @keydown.delete="deleteTask"
+        @keydown.delete="deleteTask(false)"
       />
       <i
         v-if="!isSubtask"
