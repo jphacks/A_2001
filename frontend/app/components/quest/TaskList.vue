@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-list-group>
-      <div v-for="task in tasks" :key="task.id" class="mb-1">
+      <div v-for="task in tasks" :key="task.id">
         <template v-if="task.start === null && displayDoneTask == task.done">
           <b-list-group-item class="task flex-end">
             <TaskListItem
