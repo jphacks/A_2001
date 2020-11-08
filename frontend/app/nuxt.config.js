@@ -1,11 +1,16 @@
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'app',
+    title: 'SHIBAFU',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'description',
+        name: 'description',
+        content:
+          "SHIBAFU(Status Heatmap and Illustration of Brah brah Activities For User's motivation)は、経験値システムやヒートマップを導入した、ブラウザ上で動作するタスク管理アプリです。設定したタスクをこなすことで経験値がたまり、ゲーム的な体験を提供し、モチベーションアップに繋げることができます。",
+      },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
