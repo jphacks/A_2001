@@ -1,6 +1,6 @@
 # SHIBAFU -Status Heatmap and Illustration of Blah blah Activities For User's motivation-
 
-[![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2020/09/JPHACKS2020_ogp.jpg)](https://www.youtube.com/watch?v=G5rULR53uMk)
+[![SHIBAFU](thumbnail.jpg)](https://youtu.be/ujCIR-UGSp4)
 
 ## 製品概要
 
